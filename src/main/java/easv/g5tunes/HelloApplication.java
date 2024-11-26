@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
         } catch (IOException e) {
             throw new WorkoutExceptions(e);
         }
-        stage.setTitle("Hello!");
+        stage.setTitle("GROUP 5 TUNES");
         stage.setScene(scene);
         stage.show();
     }

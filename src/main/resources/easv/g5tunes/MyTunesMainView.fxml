@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="643.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.g5tunes.gui.HelloController">
     <children>
         <ListView layoutX="37.0" layoutY="180.0" prefHeight="362.0" prefWidth="207.0" />
@@ -55,10 +54,12 @@
         <Button layoutX="622.0" layoutY="565.0" mnemonicParsing="false" text="Delete..." />
         <Button layoutX="749.0" layoutY="565.0" mnemonicParsing="false" text="Close" />
         <Button layoutX="368.0" layoutY="565.0" mnemonicParsing="false" text="Delete" />
-        <Button layoutX="269.0" layoutY="565.0" mnemonicParsing="false" text="Button" />
+        <Button layoutX="269.0" layoutY="565.0" mnemonicParsing="false" text="⬇" />
         <ScrollBar layoutX="61.0" layoutY="71.0" prefHeight="14.0" prefWidth="182.0" />
         <ToggleButton layoutX="133.0" layoutY="34.0" mnemonicParsing="false" text="Play" />
         <ToggleButton layoutX="61.0" layoutY="34.0" mnemonicParsing="false" text="Rewind" />
         <ToggleButton layoutX="184.0" layoutY="34.0" mnemonicParsing="false" text="Forward" />
+      <Button layoutX="308.0" layoutY="565.0" mnemonicParsing="false" text="⬆" />
+      <Button layoutX="436.0" layoutY="179.0" mnemonicParsing="false" text="⬅" />
     </children>
 </AnchorPane>
