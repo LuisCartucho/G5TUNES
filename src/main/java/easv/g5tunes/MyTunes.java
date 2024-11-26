@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class MyTunes extends Application {
     @Override
     public void start(Stage stage) throws MyTuneExceptions {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("MyTunesMainView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MyTunes.class.getResource("MyTunesMainView.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());
