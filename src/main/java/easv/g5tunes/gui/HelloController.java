@@ -1,4 +1,4 @@
-package easv.g5tunes;
+package easv.g5tunes.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
