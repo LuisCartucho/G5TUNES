@@ -57,7 +57,7 @@
         <Button layoutX="269.0" layoutY="565.0" mnemonicParsing="false" text="⬇" />
         <ScrollBar layoutX="61.0" layoutY="71.0" prefHeight="14.0" prefWidth="182.0" />
         <ToggleButton layoutX="133.0" layoutY="34.0" mnemonicParsing="false" text="Play" />
-        <ToggleButton fx:id="btnRewind" layoutX="61.0" layoutY="34.0" mnemonicParsing="false" style="-fx-background-image: &lt;a href=&quot;https://ibb.co/qW41CTq&quot;&gt;&lt;img src=&quot;https://i.ibb.co/qW41CTq/backward.jpg&quot; alt=&quot;backward&quot; border=&quot;0&quot; /&gt;&lt;/a&gt;;" stylesheets="@css/Main.css" text="Rewind" />
+        <ToggleButton layoutX="61.0" layoutY="34.0" mnemonicParsing="false" text="Rewind" />
         <ToggleButton layoutX="184.0" layoutY="34.0" mnemonicParsing="false" text="Forward" />
       <Button layoutX="308.0" layoutY="565.0" mnemonicParsing="false" text="⬆" />
       <Button layoutX="436.0" layoutY="179.0" mnemonicParsing="false" text="⬅" />
