@@ -3,14 +3,23 @@ package easv.g5tunes.be;
 public class Songs {
         private int id;
         private String name;
+        private String path;
 
-        public Songs(int id, String name) {
+        public Songs(int id, String name, String path) {
                 this.id = id;
                 this.name = name;
         }
 
         public int getId() {
         return id;
+        }
+
+        public String getPath(){
+        return path;
+        }
+
+        public void setPath(String path){
+                this.path = path;
         }
 
         public void setId(int id) {

@@ -21,6 +21,5 @@ public class ConnectionManager {
         ds.setUser("CSe2024b_e_18");
         ds.setPassword("CSe2024bE18!24");
         ds.setTrustServerCertificate(true);
-
     }
 }
