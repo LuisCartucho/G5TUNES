@@ -2,10 +2,22 @@ package easv.g5tunes.gui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 
 public class MyTunesController {
+
+    @FXML
+    private Label txtSongName;
+    @FXML
+    private ListView lstViewPlaylists;
+    @FXML
+    private ListView lstViewSongonPlaylist;
+    @FXML
+    private ListView lstViewSongs;
+    @FXML
+    private TextField fieldFilterSearch;
+    @FXML
+    private ScrollBar audioVolume;
 
     public void onClickFilterSearch(ActionEvent actionEvent) {
     }

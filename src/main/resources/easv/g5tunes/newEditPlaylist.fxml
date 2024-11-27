@@ -13,8 +13,8 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField layoutX="118.0" layoutY="28.0" prefHeight="26.0" prefWidth="302.0" />
-      <Button layoutX="356.0" layoutY="86.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" text="Save" />
-      <Button layoutX="268.0" layoutY="86.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" text="Cancel" />
+      <TextField fx:id="txtFieldNewOrEditPlaylist" layoutX="118.0" layoutY="28.0" prefHeight="26.0" prefWidth="302.0" />
+      <Button layoutX="356.0" layoutY="86.0" mnemonicParsing="false" onAction="#onClickSaveButton" prefHeight="26.0" prefWidth="76.0" text="Save" />
+      <Button layoutX="268.0" layoutY="86.0" mnemonicParsing="false" onAction="#onClickCancelButton" prefHeight="26.0" prefWidth="76.0" text="Cancel" />
    </children>
 </AnchorPane>
