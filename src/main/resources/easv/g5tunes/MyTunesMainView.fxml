@@ -55,21 +55,26 @@
         <Button layoutX="749.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickClose" text="Close" />
         <Button layoutX="368.0" layoutY="565.0" mnemonicParsing="false" onAction="#OnClickSongonPlaylistDelete" text="Delete" />
         <Button layoutX="269.0" layoutY="565.0" mnemonicParsing="false" onAction="#OnClickSongonPlaylistScrollDown" text="⬇" />
-        <ScrollBar fx:id="audioVolume" layoutX="54.0" layoutY="125.0" prefHeight="14.0" prefWidth="180.0" />
-        <ToggleButton layoutX="115.0" layoutY="45.0" mnemonicParsing="false" onAction="#onClickPlayStop" text="⏯">
+        <ScrollBar fx:id="audioVolume" layoutX="93.0" layoutY="114.0" prefHeight="14.0" prefWidth="180.0" />
+        <ToggleButton layoutX="154.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickPlayStop" text="⏯">
          <font>
             <Font size="30.0" />
          </font></ToggleButton>
-        <ToggleButton layoutX="195.0" layoutY="58.0" mnemonicParsing="false" onAction="#onClickFastForward" text="⏩">
+        <ToggleButton layoutX="234.0" layoutY="47.0" mnemonicParsing="false" onAction="#onClickFastForward" text="⏩">
          <font>
             <Font size="18.0" />
          </font></ToggleButton>
       <Button layoutX="308.0" layoutY="565.0" mnemonicParsing="false" onAction="#OnClickSongonPlaylistScrollUp" text="⬆" />
       <Button layoutX="436.0" layoutY="179.0" mnemonicParsing="false" onAction="#onClickAddSongsToPlaylist" text="⬅" />
-      <ToggleButton layoutX="55.0" layoutY="58.0" mnemonicParsing="false" onAction="#onClickRewind" text="⏪">
+      <ToggleButton layoutX="94.0" layoutY="47.0" mnemonicParsing="false" onAction="#onClickRewind" text="⏪">
          <font>
             <Font size="18.0" />
          </font>
       </ToggleButton>
+      <Label layoutX="44.0" layoutY="96.0" text="🔊">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
