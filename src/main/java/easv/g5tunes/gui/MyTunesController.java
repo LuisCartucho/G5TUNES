@@ -9,11 +9,11 @@ public class MyTunesController {
     @FXML
     private Label txtSongName;
     @FXML
-    private ListView lstViewPlaylists;
+    private ListView<String> lstViewPlaylists;
     @FXML
-    private ListView lstViewSongonPlaylist;
+    private ListView<String> lstViewSongonPlaylist;
     @FXML
-    private ListView lstViewSongs;
+    private ListView<String> lstViewSongs;
     @FXML
     private TextField fieldFilterSearch;
     @FXML
