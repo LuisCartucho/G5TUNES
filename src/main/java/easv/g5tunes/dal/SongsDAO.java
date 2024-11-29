@@ -32,7 +32,9 @@ public class SongsDAO {
                 Songs song = new Songs(
                         rs.getInt("Id"),
                         rs.getString("Title"),
-                        rs.getString("Artist")
+                        rs.getString("Artist"),
+                        rs.getString("File Path"),
+                        rs.getInt("Duration")
 
                 );
                 songs.add(song);
