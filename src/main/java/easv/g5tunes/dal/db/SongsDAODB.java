@@ -28,7 +28,9 @@ public class SongsDAODB implements ISongsDAO {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String artist = rs.getString("artist");
-                Songs songs1 = new Songs( id, title, artist);
+                String filePath = rs.getString("file path");
+                int duration = rs.getInt("duration");
+                Songs songs1 = new Songs( id, title, artist, filePath, duration);
                 songs1.add(songs);
             }
         } catch (SQLServerException e) {
