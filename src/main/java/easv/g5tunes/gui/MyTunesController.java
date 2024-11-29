@@ -1,8 +1,13 @@
 package easv.g5tunes.gui;
 
+import easv.g5tunes.be.Songs;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.util.List;
 
 public class MyTunesController {
 
@@ -23,7 +28,7 @@ public class MyTunesController {
     }
 
     public void onClickPlaylistsNew(ActionEvent actionEvent) {
-        
+
     }
 
     public void onClickPlaylistsEdit(ActionEvent actionEvent) {
@@ -65,3 +70,4 @@ public class MyTunesController {
     public void onClickRewind(ActionEvent actionEvent) {
     }
 }
+

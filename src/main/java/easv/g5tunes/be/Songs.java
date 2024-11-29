@@ -1,43 +1,47 @@
 package easv.g5tunes.be;
 
+
+import java.util.List;
+
 public class Songs {
         private int id;
-        private String name;
-        private String path;
+        private String title;
+        private String artist;
+        //private int time;
 
-        public Songs(int id, String name, String path) {
+        public Songs(int id , String title, String artist) {
                 this.id = id;
-                this.name = name;
+                this.title = title;
+                this.artist = artist;
+                //this.time = time;
         }
 
-        public int getId() {
-        return id;
+
+
+
+
+        public String getTitle() {
+                return title;
         }
 
-        public String getPath(){
-        return path;
+        public int getId(){
+                return id;
         }
 
-        public void setPath(String path){
-                this.path = path;
+        public String getArtist() {
+                return artist;
         }
 
-        public void setId(int id) {
-        this.id = id;
+        /**public int getTime() {
+                return time;
         }
-
-        public String getName() {
-        return name;
-        }
-
-        public void setName(String username) {
-        this.name = username;
-        }
-
+*/
         @Override
         public String toString() {
-                return id + ", " + name;
+                return title + " - " + artist;
+        }
+
+        public void add(List<Songs> songs) {
         }
 }
-
 
