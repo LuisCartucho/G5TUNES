@@ -20,7 +20,7 @@ public class SongsDAO {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
-    public List<Songs> getAllSongs() {
+    public List<Songs> getSongs() {
         List<Songs> songs = new ArrayList<>();
         String sql = "SELECT ID ,Title, Artist";
 

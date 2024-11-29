@@ -12,9 +12,10 @@ public class SongsController {
     private final ISongsDAO songsDAO = new SongsDAODB();
 
     // Get all users
-    public List<Songs> getAllSongs() throws MyTuneExceptions {
-        return songsDAO.getAllSongs();
+    public List<Songs> getSongs() throws MyTuneExceptions {
+        return songsDAO.getAll();
     }
+
 }
 
 

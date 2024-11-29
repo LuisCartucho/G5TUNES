@@ -2,6 +2,7 @@ package easv.g5tunes.gui;
 
 import easv.g5tunes.be.Songs;
 import easv.g5tunes.dal.db.ConnectionManager;
+import easv.g5tunes.gui.model.SongsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class MyTunesController implements Initializable {
 
-    private final ConnectionManager songsModel = new ConnectionManager();
+    private final SongsModel songsModel = new SongsModel();
 
 
 
@@ -78,8 +79,7 @@ public class MyTunesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lstViewSongs.setItems(songsModel.getAllSongs());
-
+        lstViewSongs.setItems(songsModel.getSongs());
     }
 }
 

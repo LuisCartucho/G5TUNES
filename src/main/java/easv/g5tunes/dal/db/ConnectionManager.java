@@ -2,6 +2,7 @@ package easv.g5tunes.dal.db;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import easv.g5tunes.be.Songs;
 
 import java.sql.Connection;
 
@@ -20,6 +21,10 @@ public class ConnectionManager {
         return ds.getConnection();
     }
 }
+
+
+
+
 
 
 
