@@ -1,4 +1,4 @@
-package easv.g5tunes.bll;
+package easv.g5tunes.dal.db;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -20,3 +20,8 @@ public class ConnectionManager {
         return ds.getConnection();
     }
 }
+
+
+
+
+

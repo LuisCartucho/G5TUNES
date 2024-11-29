@@ -2,7 +2,6 @@ package easv.g5tunes.dal.db;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import easv.g5tunes.be.Songs;
-import easv.g5tunes.bll.ConnectionManager;
 import easv.g5tunes.dal.ISongsDAO;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 

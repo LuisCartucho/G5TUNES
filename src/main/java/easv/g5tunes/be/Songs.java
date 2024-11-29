@@ -1,6 +1,8 @@
 package easv.g5tunes.be;
 
 
+import javafx.collections.ObservableList;
+
 import java.util.List;
 
 public class Songs {
@@ -16,8 +18,9 @@ public class Songs {
                 //this.time = time;
         }
 
+        public Songs(ObservableList<Songs> allSongs) {
 
-
+        }
 
 
         public String getTitle() {

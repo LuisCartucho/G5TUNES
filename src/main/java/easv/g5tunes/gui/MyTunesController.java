@@ -1,15 +1,20 @@
 package easv.g5tunes.gui;
 
 import easv.g5tunes.be.Songs;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import easv.g5tunes.dal.db.ConnectionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import java.util.List;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MyTunesController {
+public class MyTunesController implements Initializable {
+
+    private final ConnectionManager songsModel = new ConnectionManager();
+
+
 
     @FXML
     private Label txtSongName;
@@ -18,7 +23,7 @@ public class MyTunesController {
     @FXML
     private ListView<String> lstViewSongonPlaylist;
     @FXML
-    private ListView<String> lstViewSongs;
+    private ListView<Songs> lstViewSongs;
     @FXML
     private TextField fieldFilterSearch;
     @FXML
@@ -68,6 +73,13 @@ public class MyTunesController {
     }
 
     public void onClickRewind(ActionEvent actionEvent) {
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        lstViewSongs.setItems(songsModel.getAllSongs());
+
     }
 }
 
