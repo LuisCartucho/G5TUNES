@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongsDAO {
-    private static final String URL = "jdbc:sqlserver://10.176.111.34:1433;databaseName=YourDatabaseName";
+    private static final String URL = "jdbc:sqlserver://10.176.111.34:1433;databaseName=G5TUNES";
     private static final String USER = "CSe2024b_e_18";
     private static final String PASSWORD = "CSe2024bE18!24";
 
