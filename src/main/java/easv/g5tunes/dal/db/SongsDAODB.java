@@ -21,7 +21,7 @@ public class SongsDAODB implements ISongsDAO {
         List<Songs> songs = new ArrayList<>();
         try {
             Connection c = con.getConnection();
-            String sql = "SELECT * FROM Songs";
+            String sql = "SELECT * FROM dbo.Songs";
             PreparedStatement stmt = c.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

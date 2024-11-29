@@ -1,6 +1,5 @@
 package easv.g5tunes.be;
 
-
 import java.util.List;
 
 public class Songs {
@@ -18,6 +17,8 @@ public class Songs {
                 this.filePath = filePath;
                 this.duration = duration;
         }
+
+
 
         public int getId() {
                 return id;

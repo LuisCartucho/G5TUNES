@@ -9,5 +9,4 @@ import java.util.List;
 public interface ISongsDAO {
     List<Songs> getAll() throws MyTuneExceptions;
 
-
 }
