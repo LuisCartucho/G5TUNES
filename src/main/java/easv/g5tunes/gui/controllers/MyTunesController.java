@@ -1,6 +1,7 @@
 package easv.g5tunes.gui.controllers;
 
 import easv.g5tunes.be.Songs;
+import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,8 @@ public class MyTunesController implements Initializable {
     private final SongsModel songsModel = new SongsModel();
 
 
+    @FXML
+    private Button btnRefresh;
     @FXML
     private Label txtSongName;
     @FXML
@@ -80,6 +83,20 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lstViewSongs.setItems(songsModel.getSongs());
+    }
+
+    private void showAlertWindow(Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+        alert.showAndWait();
+    }
+
+    public void onBtnRefreshAct(ActionEvent actionEvent) {
+        try {
+            songsModel.loadSongs();
+        } catch (MyTuneExceptions e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
     }
 }
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SongsDAO implements ISongsDAO {
+    public class SongsDAO implements ISongsDAO {
 
     private final String splitChar = ";";
     private final Path filePath;
@@ -98,7 +98,7 @@ public class SongsDAO implements ISongsDAO {
 
     @Override
     public Songs get(int id) throws MyTuneExceptions {
-        List<Songs> all =getAll();
+        List<Songs> all = getAll();
         for(Songs songs : all){
             if (songs.getId() == id)
                 return songs;
