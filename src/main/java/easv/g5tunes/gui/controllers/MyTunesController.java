@@ -1,4 +1,4 @@
-package easv.g5tunes.gui;
+package easv.g5tunes.gui.controllers;
 
 import easv.g5tunes.be.Songs;
 import easv.g5tunes.gui.model.SongsModel;

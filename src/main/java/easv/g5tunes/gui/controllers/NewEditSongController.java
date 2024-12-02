@@ -1,4 +1,4 @@
-package easv.g5tunes.gui;
+package easv.g5tunes.gui.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
