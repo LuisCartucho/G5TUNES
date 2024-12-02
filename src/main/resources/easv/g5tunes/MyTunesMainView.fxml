@@ -3,7 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -55,26 +56,27 @@
         <Button layoutX="749.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickClose" text="Close" />
         <Button layoutX="368.0" layoutY="565.0" mnemonicParsing="false" onAction="#OnClickSongonPlaylistDelete" text="Delete" />
         <Button layoutX="269.0" layoutY="565.0" mnemonicParsing="false" onAction="#OnClickSongonPlaylistScrollDown" text="⬇" />
-        <ScrollBar fx:id="audioVolume" layoutX="93.0" layoutY="114.0" prefHeight="14.0" prefWidth="180.0" />
-        <ToggleButton layoutX="154.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickPlayStop" text="⏯">
+        <ToggleButton layoutX="156.0" layoutY="21.0" mnemonicParsing="false" onAction="#onClickPlayStop" text="⏯">
          <font>
             <Font size="30.0" />
          </font></ToggleButton>
-        <ToggleButton layoutX="234.0" layoutY="47.0" mnemonicParsing="false" onAction="#onClickFastForward" text="⏩">
+        <ToggleButton layoutX="236.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickFastForward" text="⏩">
          <font>
             <Font size="18.0" />
          </font></ToggleButton>
       <Button layoutX="308.0" layoutY="565.0" mnemonicParsing="false" onAction="#OnClickSongonPlaylistScrollUp" text="⬆" />
       <Button layoutX="436.0" layoutY="179.0" mnemonicParsing="false" onAction="#onClickAddSongsToPlaylist" text="⬅" />
-      <ToggleButton layoutX="94.0" layoutY="47.0" mnemonicParsing="false" onAction="#onClickRewind" text="⏪">
+      <ToggleButton layoutX="96.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickRewind" text="⏪">
          <font>
             <Font size="18.0" />
          </font>
       </ToggleButton>
-      <Label layoutX="44.0" layoutY="96.0" text="🔊">
+      <Label layoutX="97.0" layoutY="120.0" prefHeight="30.0" prefWidth="28.0" text="🔊">
          <font>
-            <Font size="34.0" />
+            <Font size="20.0" />
          </font>
       </Label>
+      <Slider fx:id="audioVolume" layoutX="130.0" layoutY="128.0" prefHeight="14.0" prefWidth="110.0" />
+      <ProgressBar layoutX="85.0" layoutY="99.0" prefWidth="200.0" progress="0.0" />
     </children>
 </AnchorPane>
