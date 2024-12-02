@@ -7,14 +7,12 @@ public class Songs {
         private int id;
         private String title;
         private String artist;
-        private String filePath; // Local file path or URL
         private int duration; // Duration in seconds
 
-        public Songs(int id, String title, String artist, String filePath, int duration) {
+        public Songs(int id, String title, String artist, int duration) {
                 this.id = id;
                 this.title = title;
                 this.artist = artist;
-                this.filePath = filePath;
                 this.duration = duration;
         }
 
@@ -52,17 +50,15 @@ public class Songs {
                 this.duration = duration;
         }
 
-        public String getFilePath() {
-                return filePath;
-        }
-
-        public void setFilePath(String filePath) {
-                this.filePath = filePath;
-        }
 
         @Override
         public String toString() {
-                return title + " - " + artist;
+                return "Songs{" +
+                        "id=" + id +
+                        ", title='" + title + '\'' +
+                        ", artist='" + artist + '\'' +
+                        ", duration=" + duration +
+                        '}';
         }
 
         public void add(List<Songs> songs) {
