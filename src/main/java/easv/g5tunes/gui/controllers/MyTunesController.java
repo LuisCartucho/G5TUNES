@@ -15,7 +15,6 @@ public class MyTunesController implements Initializable {
     private final SongsModel songsModel = new SongsModel();
 
 
-
     @FXML
     private Label txtSongName;
     @FXML
@@ -27,7 +26,9 @@ public class MyTunesController implements Initializable {
     @FXML
     private TextField fieldFilterSearch;
     @FXML
-    private ScrollBar audioVolume;
+    private Slider audioVolume;
+    @FXML
+    private ProgressBar audioProgressBar;
 
     public void onClickFilterSearch(ActionEvent actionEvent) {
     }
