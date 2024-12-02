@@ -1,7 +1,6 @@
 package easv.g5tunes.gui;
 
 import easv.g5tunes.be.Songs;
-import easv.g5tunes.dal.db.ConnectionManager;
 import easv.g5tunes.gui.model.SongsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

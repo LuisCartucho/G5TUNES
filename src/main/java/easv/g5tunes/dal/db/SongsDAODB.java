@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SongsDAODB implements ISongsDAO {
 
-    private ConnectionManager con = new ConnectionManager();
+    private DBConnection con = new DBConnection();
 
     public List<Songs> getAll() throws MyTuneExceptions {
         List<Songs> songs = new ArrayList<>();
@@ -28,8 +28,7 @@ public class SongsDAODB implements ISongsDAO {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String artist = rs.getString("artist");
-                int duration = rs.getInt("duration");
-                Songs songs1 = new Songs( id, title, artist, duration);
+                Songs songs1 = new Songs( id, title, artist);
                 songs1.add(songs);
             }
         } catch (SQLServerException e) {
@@ -38,6 +37,26 @@ public class SongsDAODB implements ISongsDAO {
             throw new MyTuneExceptions(e);
         }
         return songs;
+    }
+
+    @Override
+    public Songs add(Songs songs) throws MyTuneExceptions {
+        return null;
+    }
+
+    @Override
+    public void delete(Songs songs) throws MyTuneExceptions {
+
+    }
+
+    @Override
+    public void update(Songs songs) throws MyTuneExceptions {
+
+    }
+
+    @Override
+    public Songs get(int userId) throws MyTuneExceptions {
+        return null;
     }
 }
 

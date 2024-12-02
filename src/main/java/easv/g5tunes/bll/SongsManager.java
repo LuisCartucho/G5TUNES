@@ -8,7 +8,7 @@ import easv.g5tunes.exceptions.MyTuneExceptions;
 
 import java.util.List;
 
-public class SongsController {
+public class SongsManager {
     private final ISongsDAO songsDAO = new SongsDAODB();
 
     // Get all users

@@ -7,13 +7,13 @@ public class Songs {
         private int id;
         private String title;
         private String artist;
-        private int duration; // Duration in seconds
+        private int duration; // Duration in seconds //Maybe we can add this later
 
-        public Songs(int id, String title, String artist, int duration) {
+        public Songs(int id, String title, String artist) {
                 this.id = id;
                 this.title = title;
                 this.artist = artist;
-                this.duration = duration;
+
         }
 
 
@@ -57,7 +57,6 @@ public class Songs {
                         "id=" + id +
                         ", title='" + title + '\'' +
                         ", artist='" + artist + '\'' +
-                        ", duration=" + duration +
                         '}';
         }
 

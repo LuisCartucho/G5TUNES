@@ -9,4 +9,11 @@ import java.util.List;
 public interface ISongsDAO {
     List<Songs> getAll() throws MyTuneExceptions;
 
+    Songs add(Songs songs) throws MyTuneExceptions;
+
+    void delete(Songs songs) throws MyTuneExceptions;
+
+    void update(Songs songs) throws MyTuneExceptions;
+
+    Songs get(int userId) throws MyTuneExceptions;
 }
