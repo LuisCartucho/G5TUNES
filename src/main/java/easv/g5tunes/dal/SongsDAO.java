@@ -73,8 +73,36 @@ public class SongsDAO implements ISongsDAO {
 
     }
 
+    private void clearAndSave(List<Songs> songs) throws MyTuneExceptions {
+        List<String> lines = new ArrayList<>();
+        for (Songs song : songs) {
+            lines.add(song.getId() + splitChar + song.getTitle() + splitChar + song.getArtist());
+        }
+        try{
+            Files.write(filePath, lines);
+        } catch (IOException e) {
+            throw new MyTuneExceptions(e);
+        }
+    }
+
+    private int getNextId() throws MyTuneExceptions {
+        List<Songs> songs = getAll();
+        int maxId = 0;
+        for (Songs song : songs) {
+            if (song.getId() > maxId) {
+                maxId = song.getId();
+            }
+        }
+        return maxId + 1;
+    }
+
     @Override
-    public Songs get(int userId) throws MyTuneExceptions {
+    public Songs get(int id) throws MyTuneExceptions {
+        List<Songs> all =getAll();
+        for(Songs songs : all){
+            if (songs.getId() == id)
+                return songs;
+        }
         return null;
     }
 }
