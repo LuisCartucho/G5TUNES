@@ -79,6 +79,14 @@ public class MyTunesController implements Initializable {
     public void onClickRewind(ActionEvent actionEvent) {
     }
 
+    public void onBtnRefreshAct(ActionEvent actionEvent) {
+        try {
+            songsModel.loadSongs();
+        } catch (MyTuneExceptions e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,13 +98,6 @@ public class MyTunesController implements Initializable {
         alert.showAndWait();
     }
 
-    public void onBtnRefreshAct(ActionEvent actionEvent) {
-        try {
-            songsModel.loadSongs();
-        } catch (MyTuneExceptions e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-            alert.showAndWait();
-        }
-    }
+
 }
 

@@ -28,8 +28,8 @@ public class SongsDAODB implements ISongsDAO {
                 int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String artist = rs.getString("artist");
-                Songs songs1 = new Songs( id, title, artist);
-                songs1.add(songs);
+                Songs songs1 = new Songs(id, title, artist);
+                songs.add(songs1);
             }
         } catch (SQLServerException e) {
             throw new MyTuneExceptions(e);
