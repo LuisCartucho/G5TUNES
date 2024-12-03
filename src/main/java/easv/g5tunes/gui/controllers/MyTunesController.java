@@ -16,8 +16,7 @@ public class MyTunesController implements Initializable {
     private final SongsModel songsModel = new SongsModel();
 
 
-    @FXML
-    private Button btnRefresh;
+
     @FXML
     private Label txtSongName;
     @FXML
@@ -79,9 +78,6 @@ public class MyTunesController implements Initializable {
     public void onClickRewind(ActionEvent actionEvent) {
     }
 
-    public void onBtnRefreshAct(ActionEvent actionEvent) {
-
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
