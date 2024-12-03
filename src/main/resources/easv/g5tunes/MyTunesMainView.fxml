@@ -50,7 +50,7 @@
         <Button layoutX="37.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickPlaylistsNew" text="New..." />
         <Button layoutX="111.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickPlaylistsEdit" prefHeight="26.0" prefWidth="52.0" text="Edit..." />
         <Button layoutX="185.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickPlaylistsDelete" text="Delete..." />
-        <Button layoutX="474.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickSongsNew" text="New..." />
+        <Button fx:id="btnNewSong" layoutX="474.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickSongsNew" text="New..." />
         <Button layoutX="548.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickSongsEdit" prefHeight="26.0" prefWidth="52.0" text="Edit..." />
         <Button layoutX="622.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickSongsDelete" text="Delete..." />
         <Button layoutX="749.0" layoutY="565.0" mnemonicParsing="false" onAction="#onClickClose" text="Close" />
