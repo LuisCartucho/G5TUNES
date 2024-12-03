@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="643.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.g5tunes.gui.controllers.MyTunesController">
+<AnchorPane fx:id="mainAnchorPane" prefHeight="643.0" prefWidth="834.0" stylesheets="@css/Main.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.g5tunes.gui.controllers.MyTunesController">
     <children>
         <ListView fx:id="lstViewPlaylists" layoutX="37.0" layoutY="180.0" prefHeight="362.0" prefWidth="207.0" />
         <ListView fx:id="lstViewSongonPlaylist" layoutX="269.0" layoutY="180.0" prefHeight="362.0" prefWidth="150.0" />
