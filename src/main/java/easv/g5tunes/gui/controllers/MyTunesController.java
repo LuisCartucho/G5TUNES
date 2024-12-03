@@ -2,6 +2,7 @@ package easv.g5tunes.gui.controllers;
 
 import easv.g5tunes.MyTunes;
 import easv.g5tunes.be.Songs;
+import easv.g5tunes.bll.SongService;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
 import javafx.event.ActionEvent;
@@ -11,8 +12,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,6 +40,11 @@ public class MyTunesController implements Initializable {
     private Slider audioVolume;
     @FXML
     private ProgressBar audioProgressBar;
+    SongService songService = new SongService();
+
+    public void addSongToListView(Songs song) {
+        lstViewSongs.getItems().add(song);
+    }
 
     public void onClickFilterSearch(ActionEvent actionEvent) {
     }
@@ -52,6 +60,17 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickSongsNew(ActionEvent actionEvent) {
+        FileChooser filechooser = new FileChooser();
+        filechooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav")
+        );
+        File selectedFile = filechooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            Songs newSong = songService.extractSongMetadata(selectedFile);
+            songService.addSong(newSong);
+            lstViewSongs.getItems().add(newSong);
+        }
     }
 
     public void onClickSongsEdit(ActionEvent actionEvent) throws MyTuneExceptions, IOException {

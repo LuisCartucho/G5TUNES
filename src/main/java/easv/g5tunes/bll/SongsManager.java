@@ -15,7 +15,6 @@ public class SongsManager {
     public List<Songs> getSongs() throws MyTuneExceptions {
         return songsDAO.getAll();
     }
-
 }
 
 
