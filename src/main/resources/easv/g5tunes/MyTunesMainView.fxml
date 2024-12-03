@@ -15,32 +15,32 @@
         <ListView fx:id="lstViewPlaylists" layoutX="37.0" layoutY="180.0" prefHeight="362.0" prefWidth="207.0" />
         <ListView fx:id="lstViewSongonPlaylist" layoutX="269.0" layoutY="180.0" prefHeight="362.0" prefWidth="150.0" />
         <ListView fx:id="lstViewSongs" layoutX="474.0" layoutY="180.0" prefHeight="362.0" prefWidth="320.0" />
-        <Label layoutX="37.0" layoutY="149.0" prefHeight="30.0" prefWidth="74.0" text="Playlists">
+        <Label layoutX="37.0" layoutY="149.0" prefHeight="30.0" prefWidth="74.0" text="Playlists" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="269.0" layoutY="149.0" prefHeight="30.0" prefWidth="150.0" text="Songs on Playlist">
+        <Label layoutX="269.0" layoutY="149.0" prefHeight="30.0" prefWidth="150.0" text="Songs on Playlist" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="474.0" layoutY="149.0" prefHeight="30.0" prefWidth="74.0" text="Songs">
+        <Label layoutX="474.0" layoutY="149.0" prefHeight="30.0" prefWidth="74.0" text="Songs" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label fx:id="txtSongName" layoutX="350.0" layoutY="78.0" prefHeight="30.0" prefWidth="60.0" text="(None)">
+        <Label fx:id="txtSongName" layoutX="350.0" layoutY="78.0" prefHeight="30.0" prefWidth="60.0" text="(None)" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="413.0" layoutY="78.0" prefHeight="30.0" prefWidth="74.0" text="is Playing">
+        <Label layoutX="413.0" layoutY="78.0" prefHeight="30.0" prefWidth="74.0" text="is Playing" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="589.0" layoutY="24.0" text="Filter:">
+        <Label layoutX="589.0" layoutY="24.0" text="Filter:" textFill="WHITE">
             <font>
                 <Font size="14.0" />
             </font>
@@ -71,7 +71,7 @@
             <Font size="18.0" />
          </font>
       </ToggleButton>
-      <Label layoutX="97.0" layoutY="120.0" prefHeight="30.0" prefWidth="28.0" text="🔊">
+      <Label layoutX="97.0" layoutY="120.0" prefHeight="30.0" prefWidth="28.0" text="🔊" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
