@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="265.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.g5tunes.gui.controllers.NewEditSongController">
+<AnchorPane prefHeight="265.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="easv.g5tunes.gui.controllers.EditSongController">
    <children>
       <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="22.0" layoutY="28.0" prefHeight="27.0" prefWidth="76.0" text="Title:" textAlignment="RIGHT">
          <font>

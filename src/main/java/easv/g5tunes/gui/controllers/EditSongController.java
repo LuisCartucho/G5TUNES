@@ -4,7 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class NewEditSongController {
+public class EditSongController {
     @FXML
     private TextField txtFieldTitle;
     @FXML
