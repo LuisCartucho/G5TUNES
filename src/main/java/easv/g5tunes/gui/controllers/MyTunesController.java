@@ -80,17 +80,19 @@ public class MyTunesController implements Initializable {
     }
 
     public void onBtnRefreshAct(ActionEvent actionEvent) {
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        lstViewSongs.setItems(songsModel.getSongs());
+
         try {
             songsModel.loadSongs();
         } catch (MyTuneExceptions e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        lstViewSongs.setItems(songsModel.getSongs());
     }
 
     private void showAlertWindow(Exception e) {
