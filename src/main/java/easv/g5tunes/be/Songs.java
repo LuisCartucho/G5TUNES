@@ -56,7 +56,7 @@ public class Songs {
 
         @Override
         public String toString() {
-                return  title + '-' + artist ;
+                return  title +' '+'-'+' ' + artist ;
         }
 
 
