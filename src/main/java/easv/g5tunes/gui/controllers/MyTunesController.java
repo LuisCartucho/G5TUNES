@@ -1,13 +1,19 @@
 package easv.g5tunes.gui.controllers;
 
+import easv.g5tunes.MyTunes;
 import easv.g5tunes.be.Songs;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -15,8 +21,8 @@ public class MyTunesController implements Initializable {
 
     private final SongsModel songsModel = new SongsModel();
 
-
-
+    @FXML
+    private Button btnSongEdit;
     @FXML
     private Label txtSongName;
     @FXML
@@ -48,7 +54,18 @@ public class MyTunesController implements Initializable {
     public void onClickSongsNew(ActionEvent actionEvent) {
     }
 
-    public void onClickSongsEdit(ActionEvent actionEvent) {
+    public void onClickSongsEdit(ActionEvent actionEvent) throws MyTuneExceptions, IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/easv/g5tunes/addNewSong.fxml"));
+        Parent scene = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(scene));
+        stage.setResizable(false);
+        stage.setTitle("G5Tunes");
+        stage.centerOnScreen();
+
+        stage.show();
     }
 
     public void onClickSongsDelete(ActionEvent actionEvent) {
