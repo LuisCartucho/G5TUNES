@@ -9,9 +9,10 @@ public class Songs {
         private String artist;
         private int duration; // Duration in seconds //Maybe we can add this later
 
-        public Songs(String title, String artist) {
-                this(-1, title, artist);
-        }
+//        public Songs(String title, String artist) {
+//
+//                this(-1, title, artist);
+//        }
 
         public Songs(int id, String title, String artist) {
                 this.id = id;
@@ -19,7 +20,10 @@ public class Songs {
                 this.artist = artist;
         }
 
-
+        public Songs(String title, String artist){
+                this.title = title;
+                this.artist = artist;
+        }
 
         public int getId() {
                 return id;
