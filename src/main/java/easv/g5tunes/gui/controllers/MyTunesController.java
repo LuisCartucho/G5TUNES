@@ -138,6 +138,7 @@ public class MyTunesController implements Initializable {
                 // Perform the deletion
                 lstViewSongs.getItems().remove(selectedSongs); // Removes the song from the ListView
                 // Optionally, remove it from the underlying data source as well
+                //deleteSongFromDatabase(selectedSongs);
 
                 System.out.println("Song deleted: " + selectedSongs.getTitle());
             }
@@ -150,6 +151,14 @@ public class MyTunesController implements Initializable {
             warningAlert.showAndWait();
         }
     }
+    /** Example method to handle data persistence (optional)
+    private void deleteSongFromDatabase(Songs song) throws MyTuneExceptions {
+        // Implement your logic to remove the song from your database or data source
+        // For example, using a data manager or repository:
+        songsDataManager.delete(song); // Replace with your actual data handling logic
+    }*/
+
+
 
 
     public void onClickClose(ActionEvent actionEvent) {
