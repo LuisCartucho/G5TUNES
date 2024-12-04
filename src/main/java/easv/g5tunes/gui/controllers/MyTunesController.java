@@ -42,6 +42,10 @@ public class MyTunesController implements Initializable {
     private ProgressBar audioProgressBar;
     SongService songService = new SongService();
 
+    public void refreshListView() {
+        lstViewSongs.refresh(); // Ensure the updated data appears in ListView
+    }
+
     public void addSongToListView(Songs song) {
         lstViewSongs.getItems().add(song);
     }
@@ -75,16 +79,43 @@ public class MyTunesController implements Initializable {
 
     public void onClickSongsEdit(ActionEvent actionEvent) throws MyTuneExceptions, IOException {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/easv/g5tunes/addNewSong.fxml"));
-        Parent scene = loader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(scene));
-        stage.setResizable(false);
-        stage.setTitle("G5Tunes");
-        stage.centerOnScreen();
+        Songs selectedSongs = lstViewSongs.getSelectionModel().getSelectedItem();
+        if (selectedSongs != null) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/easv/g5tunes/addNewSong.fxml"));
+            Parent root = loader.load();
 
-        stage.show();
+            AddNewSongController addNewSongController = loader.getController();
+            addNewSongController.setSongs(selectedSongs); // Pass selected song to Edit controller
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } else {
+            System.out.println("No song selected!");
+        }
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("addNewSong.fxml"));
+//            Parent root = loader.load();
+//
+//            AddNewSongController controller = loader.getController();
+//            controller.setMainController(this); // Pass current controller to AddNewSongController
+//
+//            Stage stage = new Stage();
+//            stage.setScene(new Scene(root));
+//            stage.show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        FXMLLoader loader = new FXMLLoader();
+//        loader.setLocation(getClass().getResource("/easv/g5tunes/addNewSong.fxml"));
+//        Parent scene = loader.load();
+//        Stage stage = new Stage();
+//        stage.setScene(new Scene(scene));
+//        stage.setResizable(false);
+//        stage.setTitle("G5Tunes");
+//        stage.centerOnScreen();
+//
+//        stage.show();
     }
 
     public void onClickSongsDelete(ActionEvent actionEvent) {

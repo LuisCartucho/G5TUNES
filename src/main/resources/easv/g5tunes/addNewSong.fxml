@@ -32,7 +32,7 @@
                         <Insets left="80.0" top="20.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="26.0" prefWidth="185.0">
+                  <TextField fx:id="titleTxtFl" prefHeight="26.0" prefWidth="185.0">
                      <HBox.margin>
                         <Insets left="40.0" top="16.0" />
                      </HBox.margin>
@@ -46,7 +46,7 @@
                         <Insets left="76.0" top="20.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="26.0" prefWidth="186.0">
+                  <TextField fx:id="artistTxtFl" prefHeight="26.0" prefWidth="186.0">
                      <HBox.margin>
                         <Insets left="38.0" top="16.0" />
                      </HBox.margin>
@@ -78,7 +78,7 @@
                         <Insets left="76.0" top="20.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="26.0" prefWidth="188.0">
+                  <TextField fx:id="timeTxtFl" prefHeight="26.0" prefWidth="188.0">
                      <HBox.margin>
                         <Insets left="41.0" top="16.0" />
                      </HBox.margin>
@@ -92,12 +92,12 @@
                         <Insets left="83.0" top="20.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="26.0" prefWidth="187.0">
+                  <TextField fx:id="fileTxtFl" prefHeight="26.0" prefWidth="187.0">
                      <HBox.margin>
                         <Insets left="42.0" top="14.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" text="Choose...">
+                  <Button fx:id="btnChoose" mnemonicParsing="false" onAction="#onBtnChooseAct" text="Choose...">
                      <HBox.margin>
                         <Insets left="24.0" top="16.0" />
                      </HBox.margin>
@@ -111,7 +111,7 @@
                         <Insets right="20.0" top="9.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnSave" mnemonicParsing="false" text="Save">
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#onBtnSaveAct" text="Save">
                      <HBox.margin>
                         <Insets right="20.0" top="9.0" />
                      </HBox.margin>
