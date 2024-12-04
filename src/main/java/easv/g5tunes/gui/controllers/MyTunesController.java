@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MyTunesController implements Initializable {
@@ -119,9 +121,41 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickSongsDelete(ActionEvent actionEvent) {
+        // Get the selected song from the list view
+        Songs selectedSongs = lstViewSongs.getSelectionModel().getSelectedItem();
+
+        if (selectedSongs != null) {
+            // Confirm deletion
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Delete Song");
+            confirmationAlert.setHeaderText("Are you sure you want to delete this song?");
+            confirmationAlert.setContentText("Song: " + selectedSongs.getTitle());
+
+            // Wait for the user's response
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Perform the deletion
+                lstViewSongs.getItems().remove(selectedSongs); // Removes the song from the ListView
+                // Optionally, remove it from the underlying data source as well
+
+                System.out.println("Song deleted: " + selectedSongs.getTitle());
+            }
+        } else {
+            // If no song is selected, show a warning
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setTitle("No Selection");
+            warningAlert.setHeaderText("No song selected");
+            warningAlert.setContentText("Please select a song to delete.");
+            warningAlert.showAndWait();
+        }
     }
 
+
     public void onClickClose(ActionEvent actionEvent) {
+
+        Stage currentStage = (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
+        currentStage.close();
     }
 
     public void OnClickSongonPlaylistDelete(ActionEvent actionEvent) {

@@ -67,8 +67,8 @@ public class AddNewSongController {
     public void onBtnSaveAct(ActionEvent actionEvent) {
         String title = titleTxtFl.getText();
         String artist = artistTxtFl.getText();
-//        selectedSongs.setTitle(titleTxtFl.getText());
-//        selectedSongs.setArtist(artistTxtFl.getText());
+        selectedSongs.setTitle(titleTxtFl.getText());
+        selectedSongs.setArtist(artistTxtFl.getText());
 
 
 
