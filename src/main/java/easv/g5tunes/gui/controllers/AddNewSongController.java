@@ -32,6 +32,7 @@ import java.io.File;
 
 public class AddNewSongController {
 
+
     private Songs selectedSongs;
 
     public void setSongs(Songs songs) {
@@ -53,6 +54,8 @@ public class AddNewSongController {
     private Button btnChoose;
     @FXML
     private Button btnSave;
+    @FXML
+    private Button btnCancel;
 
     private MyTunesController mainController;
 
@@ -88,5 +91,9 @@ public class AddNewSongController {
         }
 
 
+    }
+
+    public void onBtnCancel(ActionEvent actionEvent) {
+        ((Stage) btnCancel.getScene().getWindow()).close();
     }
 }
