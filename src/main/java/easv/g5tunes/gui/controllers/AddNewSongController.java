@@ -70,6 +70,8 @@ public class AddNewSongController {
 //        selectedSongs.setTitle(titleTxtFl.getText());
 //        selectedSongs.setArtist(artistTxtFl.getText());
 
+
+
         ((Stage) btnSave.getScene().getWindow()).close();
 
         if(!title.isEmpty() && !artist.isEmpty() ) {
@@ -77,6 +79,7 @@ public class AddNewSongController {
 
             if (mainController != null) {
                 mainController.addSongToListView(newSong);
+                mainController.deleteSongFromListView();
             }
 
             ((Stage) btnSave.getScene().getWindow()).close();

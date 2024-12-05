@@ -48,6 +48,11 @@ public class MyTunesController implements Initializable {
         lstViewSongs.refresh(); // Ensure the updated data appears in ListView
     }
 
+    public void deleteSongFromListView() {
+        Songs selectedSongs = lstViewSongs.getSelectionModel().getSelectedItem();
+        lstViewSongs.getItems().remove(selectedSongs);
+    }
+
     public void addSongToListView(Songs song) {
         lstViewSongs.getItems().add(song);
     }
