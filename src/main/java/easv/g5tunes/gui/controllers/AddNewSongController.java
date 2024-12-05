@@ -67,14 +67,8 @@ public class AddNewSongController {
     public void onBtnSaveAct(ActionEvent actionEvent) {
         String title = titleTxtFl.getText();
         String artist = artistTxtFl.getText();
-        selectedSongs.setTitle(titleTxtFl.getText());
-        selectedSongs.setArtist(artistTxtFl.getText());
-
-        if (mainController != null) {
-            mainController.refreshListView();
-        } else {
-            System.out.println("mainController is null!");
-        }
+//        selectedSongs.setTitle(titleTxtFl.getText());
+//        selectedSongs.setArtist(artistTxtFl.getText());
 
         ((Stage) btnSave.getScene().getWindow()).close();
 
@@ -89,5 +83,7 @@ public class AddNewSongController {
         } else {
             System.out.println("All field are required!!");
         }
+
+
     }
 }
