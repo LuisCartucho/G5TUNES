@@ -88,6 +88,7 @@ public class MyTunesController implements Initializable {
 
             AddNewSongController addNewSongController = loader.getController();
             addNewSongController.setSongs(selectedSongs); // Pass selected song to Edit controller
+            addNewSongController.setMainController(this);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

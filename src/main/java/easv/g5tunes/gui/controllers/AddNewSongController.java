@@ -56,8 +56,8 @@ public class AddNewSongController {
 
     private MyTunesController mainController;
 
-    public void setMainController(MyTunesController controller) {
-        this.mainController = controller;
+    public void setMainController(MyTunesController mainController) {
+        this.mainController = mainController;
     }
 
     public void onBtnChooseAct(ActionEvent actionEvent) {
@@ -70,7 +70,11 @@ public class AddNewSongController {
         selectedSongs.setTitle(titleTxtFl.getText());
         selectedSongs.setArtist(artistTxtFl.getText());
 
-
+        if (mainController != null) {
+            mainController.refreshListView();
+        } else {
+            System.out.println("mainController is null!");
+        }
 
         ((Stage) btnSave.getScene().getWindow()).close();
 
