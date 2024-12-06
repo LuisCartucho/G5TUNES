@@ -40,6 +40,7 @@ public class AddNewSongController {
         selectedSongs = songs;
         titleTxtFl.setText(songs.getTitle());
         artistTxtFl.setText(songs.getArtist());
+        fileTxtFld.setText(filePath);
     }
 
     private String filePath;
@@ -87,8 +88,12 @@ public class AddNewSongController {
 
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
-            String filePath = selectedFile.getAbsolutePath();
+            filePath = selectedFile.getAbsolutePath();
             fileTxtFld.setText(filePath);
+            System.out.println("File chosen: " + filePath);
+            System.out.println("TextField content after choosing: " + fileTxtFld.getText());
+        } else {
+            System.out.println("No file chosen.");
         }
 
     }
@@ -102,26 +107,31 @@ public class AddNewSongController {
     public void onBtnSaveAct(ActionEvent actionEvent) {
         String title = titleTxtFl.getText();
         String artist = artistTxtFl.getText();
-        String filePath = fileTxtFld.getText();
+        filePath = fileTxtFld.getText();
+
+        System.out.println("Title: " + title);
+        System.out.println("Artist: " + artist);
+        System.out.println("File path from TextField: " + filePath);
 //        selectedSongs.setTitle(titleTxtFl.getText());
 //        selectedSongs.setArtist(artistTxtFl.getText());
 
-        ((Stage) btnSave.getScene().getWindow()).close();
+        //((Stage) btnSave.getScene().getWindow()).close();
 
-        if (filePath != null) {
-            System.out.println("Saved file path: " + filePath);
-        } else {
-            System.out.println("No file or folder selected");
-        }
+//        if (filePath != null) {
+//            System.out.println("Saved file path: " + filePath);
+//        } else {
+//            System.out.println("No file or folder selected");
+//        }
 
-        if(!title.isEmpty() && !artist.isEmpty() ) {
+        if(!title.isEmpty() && !artist.isEmpty() && filePath != null && !filePath.isEmpty() ) {
             Songs newSong = new Songs(title, artist, filePath);
 
             if (mainController != null) {
                 mainController.addSongToListView(newSong);
-                //newSong.setFilePath(filePath);
                 mainController.deleteSongFromListView();
             }
+
+            System.out.println("File saved with path: " + filePath);
 
             ((Stage) btnSave.getScene().getWindow()).close();
         } else {
