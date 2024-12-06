@@ -11,7 +11,9 @@ public class SongService {
 
     public Songs extractSongMetadata(File file) {
         String title = file.getName().replaceFirst("[.][^.]+$", ""); // Simplified logic
-        String artist = "Unknown"; // Placeholder
+        String artist = "Unknown Artist"; // Placeholder
+        String filePath = file.getAbsolutePath();
+
         return new Songs(title, artist);
     }
 

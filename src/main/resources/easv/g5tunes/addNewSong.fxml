@@ -92,12 +92,12 @@
                         <Insets left="83.0" top="20.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField fx:id="fileTxtFl" prefHeight="26.0" prefWidth="187.0">
+                  <TextField fx:id="fileTxtFld" prefHeight="26.0" prefWidth="187.0">
                      <HBox.margin>
                         <Insets left="42.0" top="14.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="btnChoose" mnemonicParsing="false" onAction="#onBtnChooseAct" text="Choose...">
+                  <Button fx:id="btnChooseFile" mnemonicParsing="false" onAction="#onChooseFile" text="Choose...">
                      <HBox.margin>
                         <Insets left="24.0" top="16.0" />
                      </HBox.margin>

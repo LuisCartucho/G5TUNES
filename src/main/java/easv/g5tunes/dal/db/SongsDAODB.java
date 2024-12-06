@@ -25,10 +25,10 @@ public class SongsDAODB implements ISongsDAO {
             PreparedStatement stmt = c.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String artist = rs.getString("artist");
-                Songs songs1 = new Songs(id, title, artist);
+                //String filePath = rs.getString("filePath");
+                Songs songs1 = new Songs(title, artist);
                 songs.add(songs1);
             }
         } catch (SQLServerException e) {
@@ -54,9 +54,6 @@ public class SongsDAODB implements ISongsDAO {
 
     }
 
-    @Override
-    public Songs get(int userId) throws MyTuneExceptions {
-        return null;
-    }
+
 }
 

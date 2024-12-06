@@ -4,9 +4,10 @@ import java.util.List;
 
 public class Songs {
 
-        private int id;
+
         private String title;
         private String artist;
+        private String filePath;
         private int duration; // Duration in seconds //Maybe we can add this later
 
 //        public Songs(String title, String artist) {
@@ -14,10 +15,11 @@ public class Songs {
 //                this(-1, title, artist);
 //        }
 
-        public Songs(int id, String title, String artist) {
-                this.id = id;
+        public Songs(String title, String artist, String filePath) {
+
                 this.title = title;
                 this.artist = artist;
+                this.filePath = filePath;
         }
 
         public Songs(String title, String artist){
@@ -25,13 +27,6 @@ public class Songs {
                 this.artist = artist;
         }
 
-        public int getId() {
-                return id;
-        }
-
-        public void setId(int id) {
-                this.id = id;
-        }
 
         public String getTitle() {
                 return title;
@@ -55,6 +50,14 @@ public class Songs {
 
         public void setDuration(int duration) {
                 this.duration = duration;
+        }
+
+        public String getFilePath() {
+                return filePath;
+        }
+
+        public void setFilePath(String filePath) {
+                this.filePath = filePath;
         }
 
 

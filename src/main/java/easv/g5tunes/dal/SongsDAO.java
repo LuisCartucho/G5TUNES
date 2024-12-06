@@ -42,10 +42,10 @@ import java.util.List;
                 String[] parts = line.split(splitChar);
                 if (parts.length == 3) {
                     try {
-                        int id = Integer.parseInt(parts[0].trim());
-                        String title = parts[1].trim();
-                        String artist = parts[2].trim();
-                        songs.add(new Songs(id, title, artist));
+                        String title = parts[0].trim();
+                        String artist = parts[1].trim();
+                        String filePath = parts[2].trim();
+                        songs.add(new Songs(title, artist, filePath));
                     } catch (NumberFormatException e) {
                         // log the error instead of printing it
                         Logger.getLogger(SongsDAO.class.getName()).log(Level.WARNING, "Invalid song ID format: " + parts[0], e);
@@ -76,7 +76,7 @@ import java.util.List;
     private void clearAndSave(List<Songs> songs) throws MyTuneExceptions {
         List<String> lines = new ArrayList<>();
         for (Songs song : songs) {
-            lines.add(song.getId() + splitChar + song.getTitle() + splitChar + song.getArtist());
+            lines.add(song.getTitle() + splitChar + song.getArtist());
         }
         try{
             Files.write(filePath, lines);
@@ -85,26 +85,9 @@ import java.util.List;
         }
     }
 
-    private int getNextId() throws MyTuneExceptions {
-        List<Songs> songs = getAll();
-        int maxId = 0;
-        for (Songs song : songs) {
-            if (song.getId() > maxId) {
-                maxId = song.getId();
-            }
-        }
-        return maxId + 1;
-    }
 
-    @Override
-    public Songs get(int id) throws MyTuneExceptions {
-        List<Songs> all = getAll();
-        for(Songs songs : all){
-            if (songs.getId() == id)
-                return songs;
-        }
-        return null;
-    }
+
+
 }
 
 

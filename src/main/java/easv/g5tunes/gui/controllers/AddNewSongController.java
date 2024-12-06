@@ -33,6 +33,7 @@ import java.io.File;
 public class AddNewSongController {
 
 
+
     private Songs selectedSongs;
 
     public void setSongs(Songs songs) {
@@ -41,17 +42,18 @@ public class AddNewSongController {
         artistTxtFl.setText(songs.getArtist());
     }
 
+    private String filePath;
 
     @FXML
     private TextField titleTxtFl;
     @FXML
     private TextField artistTxtFl;
     @FXML
-    private TextField timeTxtFl;
+    private TextField timeTxtFld;
     @FXML
-    private TextField fileTxtFl;
+    private TextField fileTxtFld;
     @FXML
-    private Button btnChoose;
+    private Button btnChooseFile;
     @FXML
     private Button btnSave;
     @FXML
@@ -59,29 +61,65 @@ public class AddNewSongController {
 
     private MyTunesController mainController;
 
+    public void onBrowseFile(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Audio Files","*.mp3","*.wav"),
+                new FileChooser.ExtensionFilter("All Files","*.*")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            filePath = selectedFile.getAbsolutePath();
+            fileTxtFld.setText(filePath);
+        }
+    }
+
+    public void onChooseFile(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            String filePath = selectedFile.getAbsolutePath();
+            fileTxtFld.setText(filePath);
+        }
+
+    }
+
     public void setMainController(MyTunesController mainController) {
         this.mainController = mainController;
     }
 
-    public void onBtnChooseAct(ActionEvent actionEvent) {
 
-    }
 
     public void onBtnSaveAct(ActionEvent actionEvent) {
         String title = titleTxtFl.getText();
         String artist = artistTxtFl.getText();
+        String filePath = fileTxtFld.getText();
 //        selectedSongs.setTitle(titleTxtFl.getText());
 //        selectedSongs.setArtist(artistTxtFl.getText());
 
-
-
         ((Stage) btnSave.getScene().getWindow()).close();
 
+        if (filePath != null) {
+            System.out.println("Saved file path: " + filePath);
+        } else {
+            System.out.println("No file or folder selected");
+        }
+
         if(!title.isEmpty() && !artist.isEmpty() ) {
-            Songs newSong = new Songs(title, artist);
+            Songs newSong = new Songs(title, artist, filePath);
 
             if (mainController != null) {
                 mainController.addSongToListView(newSong);
+                //newSong.setFilePath(filePath);
                 mainController.deleteSongFromListView();
             }
 
@@ -96,4 +134,6 @@ public class AddNewSongController {
     public void onBtnCancel(ActionEvent actionEvent) {
         ((Stage) btnCancel.getScene().getWindow()).close();
     }
+
+
 }

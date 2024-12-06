@@ -15,5 +15,5 @@ public interface ISongsDAO {
 
     void update(Songs songs) throws MyTuneExceptions;
 
-    Songs get(int userId) throws MyTuneExceptions;
+
 }
