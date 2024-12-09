@@ -2,6 +2,7 @@ package easv.g5tunes.gui.controllers;
 
 import easv.g5tunes.be.Songs;
 import easv.g5tunes.bll.SongService;
+import easv.g5tunes.dal.SongsDAO;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
 import javafx.event.ActionEvent;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -162,6 +164,7 @@ public class MyTunesController implements Initializable {
                 mediaPlayer.pause();
             }
         });
+
     }
 
     public void onClickFastForward(ActionEvent actionEvent) {
@@ -177,7 +180,7 @@ public class MyTunesController implements Initializable {
     }
 
 
-    @Override
+  /**  @Override
     public void initialize(URL location, ResourceBundle resources) {
         lstViewSongs.setItems(songsModel.getSongs());
 
@@ -188,12 +191,40 @@ public class MyTunesController implements Initializable {
             alert.showAndWait();
         }
     }
-
+*/
     private void showAlertWindow(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
         alert.showAndWait();
     }
 
+    private SongsDAO songsDAO = new SongsDAO();
 
-}
+ /**   @FXML
+    public void initialize() {
+        // Load songs from the "musics" folder on desktop
+        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
+        loadSongsFromFolder(folderPath);
+    }
+*/
+    public void loadSongsFromFolder(String folderPath) {
+        // Fetch songs using SongsDAO
+        List<Songs> songs = songsDAO.getSongsFromFolder(folderPath);
+
+        // Clear the ListView and add songs
+        lstViewSongs.getItems().clear();
+        lstViewSongs.getItems().addAll(songs);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Load songs from the "musics" folder on desktop
+        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
+        loadSongsFromFolder(folderPath);
+    }
+
+    }
+
+
+
+
 
