@@ -14,7 +14,7 @@ public class SongService {
         String artist = "Unknown Artist"; // Placeholder
         String filePath = file.getAbsolutePath();
 
-        return new Songs(title, artist);
+        return new Songs(title, artist, filePath);
     }
 
     public void addSong(Songs song) {
