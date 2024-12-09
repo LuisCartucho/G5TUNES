@@ -10,11 +10,6 @@ public class Songs {
         private String filePath;
         private int duration; // Duration in seconds //Maybe we can add this later
 
-//        public Songs(String title, String artist) {
-//
-//                this(-1, title, artist);
-//        }
-
         public Songs(String title, String artist, String filePath) {
 
                 this.title = title;
@@ -26,7 +21,6 @@ public class Songs {
                 this.title = title;
                 this.artist = artist;
         }
-
 
         public String getTitle() {
                 return title;

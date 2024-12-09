@@ -105,29 +105,6 @@ public class MyTunesController implements Initializable {
         } else {
             System.out.println("No song selected!");
         }
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("addNewSong.fxml"));
-//            Parent root = loader.load();
-//
-//            AddNewSongController controller = loader.getController();
-//            controller.setMainController(this); // Pass current controller to AddNewSongController
-//
-//            Stage stage = new Stage();
-//            stage.setScene(new Scene(root));
-//            stage.show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        FXMLLoader loader = new FXMLLoader();
-//        loader.setLocation(getClass().getResource("/easv/g5tunes/addNewSong.fxml"));
-//        Parent scene = loader.load();
-//        Stage stage = new Stage();
-//        stage.setScene(new Scene(scene));
-//        stage.setResizable(false);
-//        stage.setTitle("G5Tunes");
-//        stage.centerOnScreen();
-//
-//        stage.show();
     }
 
     public void onClickSongsDelete(ActionEvent actionEvent) {
@@ -161,15 +138,6 @@ public class MyTunesController implements Initializable {
             warningAlert.showAndWait();
         }
     }
-    /** Example method to handle data persistence (optional)
-    private void deleteSongFromDatabase(Songs song) throws MyTuneExceptions {
-        // Implement your logic to remove the song from your database or data source
-        // For example, using a data manager or repository:
-        songsDataManager.delete(song); // Replace with your actual data handling logic
-    }*/
-
-
-
 
     public void onClickClose(ActionEvent actionEvent) {
 
