@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 public class MyTunesController implements Initializable {
 
     private final SongsModel songsModel = new SongsModel();
+    SongService songService = new SongService();
+
 
     @FXML
     private Button btnSongEdit;
@@ -43,7 +45,8 @@ public class MyTunesController implements Initializable {
     private Slider audioVolume;
     @FXML
     private ProgressBar audioProgressBar;
-    SongService songService = new SongService();
+    @FXML
+    private ToggleButton btnPlayPause;
 
     public void refreshListView() {
         lstViewSongs.refresh(); // Ensure the updated data appears in ListView
@@ -184,7 +187,13 @@ public class MyTunesController implements Initializable {
         String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getFilePath();
         Media musicFileMedia = new Media(new File(musicFileString).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(musicFileMedia);
-        mediaPlayer.play();
+        btnPlayPause.setOnAction(event -> {
+            if(btnPlayPause.isSelected()) {
+                mediaPlayer.play();
+            } else {
+                mediaPlayer.pause();
+            }
+        });
     }
 
     public void onClickFastForward(ActionEvent actionEvent) {
