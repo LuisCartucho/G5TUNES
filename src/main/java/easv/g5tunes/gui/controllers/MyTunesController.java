@@ -1,6 +1,5 @@
 package easv.g5tunes.gui.controllers;
 
-import easv.g5tunes.MyTunes;
 import easv.g5tunes.be.Songs;
 import easv.g5tunes.bll.SongService;
 import easv.g5tunes.exceptions.MyTuneExceptions;
@@ -13,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -180,6 +181,10 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickPlayStop(ActionEvent actionEvent) {
+        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getFilePath();
+        Media musicFileMedia = new Media(new File(musicFileString).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(musicFileMedia);
+        mediaPlayer.play();
     }
 
     public void onClickFastForward(ActionEvent actionEvent) {
