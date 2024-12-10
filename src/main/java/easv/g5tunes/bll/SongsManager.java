@@ -10,13 +10,7 @@ import easv.g5tunes.exceptions.MyTuneExceptions;
 import java.util.List;
 
 public class SongsManager {
-   /** private final ISongsDAO songsDAO = new SongsDAO();
 
-    // Get all users
-    public List<Songs> getSongs() throws MyTuneExceptions {
-        return songsDAO.getAll();
-    }
-    */
 }
 
 

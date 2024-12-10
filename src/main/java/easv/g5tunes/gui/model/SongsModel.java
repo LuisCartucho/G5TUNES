@@ -8,16 +8,7 @@ import javafx.collections.ObservableList;
 
 public class SongsModel {
 
-     /**   private final SongsManager songsManager = new SongsManager();
-        private static final ObservableList <Songs> songs = FXCollections.observableArrayList();
 
-    public void loadSongs() throws MyTuneExceptions {
-        songs.setAll(songsManager.getSongs());
-    }
-    public ObservableList<Songs> getSongs() {
-        return songs;
-    }
-*/
 }
 
 

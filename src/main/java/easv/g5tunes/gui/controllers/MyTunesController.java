@@ -154,7 +154,7 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickPlayStop(ActionEvent actionEvent) {
-        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getFilePath();
+        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getArtist();
         Media musicFileMedia = new Media(new File(musicFileString).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(musicFileMedia);
         btnPlayPause.setOnAction(event -> {
@@ -180,18 +180,7 @@ public class MyTunesController implements Initializable {
     }
 
 
-  /**  @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        lstViewSongs.setItems(songsModel.getSongs());
 
-        try {
-            songsModel.loadSongs();
-        } catch (MyTuneExceptions e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-            alert.showAndWait();
-        }
-    }
-*/
     private void showAlertWindow(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
         alert.showAndWait();
@@ -199,13 +188,7 @@ public class MyTunesController implements Initializable {
 
     private SongsDAO songsDAO = new SongsDAO();
 
- /**   @FXML
-    public void initialize() {
-        // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
-        loadSongsFromFolder(folderPath);
-    }
-*/
+
     public void loadSongsFromFolder(String folderPath) {
         // Fetch songs using SongsDAO
         List<Songs> songs = songsDAO.getSongsFromFolder(folderPath);
