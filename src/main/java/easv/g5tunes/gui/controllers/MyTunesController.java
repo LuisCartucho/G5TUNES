@@ -50,6 +50,9 @@ public class MyTunesController implements Initializable {
     @FXML
     private ToggleButton btnPlayPause;
 
+    private MediaPlayer mediaPlayer;
+    private Media currentMedia;
+
     public void refreshListView() {
         lstViewSongs.refresh(); // Ensure the updated data appears in ListView
     }
@@ -154,16 +157,67 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickPlayStop(ActionEvent actionEvent) {
-        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getFilePath();
-        Media musicFileMedia = new Media(new File(musicFileString).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(musicFileMedia);
+
+
+        Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
+
+        if (selectedSong == null) {
+
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setTitle("No Selection");
+            warningAlert.setHeaderText("No song selected");
+            warningAlert.setContentText("Please select a song to play.");
+            warningAlert.showAndWait();
+            return;
+        }
+
+        String musicFileString = selectedSong.getFilePath();
+        File musicFile = new File(musicFileString);
+
+        if(!musicFile.exists()) {
+
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("File Not Found");
+            errorAlert.setHeaderText("Music file not found");
+            errorAlert.setContentText("The selected file does not exist:" + musicFileString);
+            errorAlert.showAndWait();
+            return;
+        }
+
+        // Stop and dispose of the existing MediaPlayer, if any
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+        }
+
+
+        // This creates a new MediaPlayer for the selected song
+        currentMedia = new Media(musicFile.toURI().toString());
+        mediaPlayer = new MediaPlayer(currentMedia);
+
+        //Handles play/pause toggle
         btnPlayPause.setOnAction(event -> {
-            if(btnPlayPause.isSelected()) {
+            if (btnPlayPause.isSelected()) {
                 mediaPlayer.play();
             } else {
                 mediaPlayer.pause();
             }
         });
+
+        // Start playing the new song
+        mediaPlayer.play();
+        btnPlayPause.setSelected(true); // Update button state to "playing"
+
+        //        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getFilePath();
+//        Media musicFileMedia = new Media(new File(musicFileString).toURI().toString());
+//        MediaPlayer mediaPlayer = new MediaPlayer(musicFileMedia);
+//        btnPlayPause.setOnAction(event -> {
+//            if(btnPlayPause.isSelected()) {
+//                mediaPlayer.play();
+//            } else {
+//                mediaPlayer.pause();
+//            }
+//        });
 
     }
 
@@ -201,7 +255,7 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
+        String folderPath = "C:\\Users\\Ali Emre\\Desktop\\mp3 files for myTunes"; // Path to your folder
         loadSongsFromFolder(folderPath);
     }
 
