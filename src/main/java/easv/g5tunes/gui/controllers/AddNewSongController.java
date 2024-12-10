@@ -7,26 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
-import easv.g5tunes.MyTunes;
-import easv.g5tunes.be.Songs;
-import easv.g5tunes.bll.SongService;
-import easv.g5tunes.exceptions.MyTuneExceptions;
-import easv.g5tunes.gui.model.SongsModel;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import java.io.File;
 
@@ -40,7 +22,7 @@ public class AddNewSongController {
         selectedSongs = songs;
         titleTxtFl.setText(songs.getTitle());
         artistTxtFl.setText(songs.getArtist());
-        fileTxtFld.setText(filePath);
+        fileTxtFld.setText(songs.getFilePath());
     }
 
     private String filePath;
@@ -95,33 +77,20 @@ public class AddNewSongController {
         } else {
             System.out.println("No file chosen.");
         }
-
     }
 
     public void setMainController(MyTunesController mainController) {
         this.mainController = mainController;
     }
 
-
-
     public void onBtnSaveAct(ActionEvent actionEvent) {
         String title = titleTxtFl.getText();
         String artist = artistTxtFl.getText();
-        filePath = fileTxtFld.getText();
+        String filePath = fileTxtFld.getText();
 
         System.out.println("Title: " + title);
         System.out.println("Artist: " + artist);
         System.out.println("File path from TextField: " + filePath);
-//        selectedSongs.setTitle(titleTxtFl.getText());
-//        selectedSongs.setArtist(artistTxtFl.getText());
-
-        //((Stage) btnSave.getScene().getWindow()).close();
-
-//        if (filePath != null) {
-//            System.out.println("Saved file path: " + filePath);
-//        } else {
-//            System.out.println("No file or folder selected");
-//        }
 
         if(!title.isEmpty() && !artist.isEmpty() && filePath != null && !filePath.isEmpty() ) {
             Songs newSong = new Songs(title, artist, filePath);
@@ -137,7 +106,6 @@ public class AddNewSongController {
         } else {
             System.out.println("All field are required!!");
         }
-
 
     }
 

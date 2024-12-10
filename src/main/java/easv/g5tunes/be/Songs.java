@@ -1,7 +1,5 @@
 package easv.g5tunes.be;
 
-import java.util.List;
-
 public class Songs {
 
 
@@ -10,16 +8,11 @@ public class Songs {
         private String filePath;
         private int duration; // Duration in seconds //Maybe we can add this later
 
-        public Songs(String title, String artist, String filePath) {
+        public Songs(String title,String artist,String filePath) {
 
                 this.title = title;
                 this.artist = artist;
                 this.filePath = filePath;
-        }
-
-        public Songs(String title, String artist){
-                this.title = title;
-                this.artist = artist;
         }
 
         public String getTitle() {
@@ -54,10 +47,17 @@ public class Songs {
                 this.filePath = filePath;
         }
 
+        public String getDisplayName() { // this method removes the .mp3 from the name of the musics , to display them on the next method
+                if (title.endsWith(".mp3")) {
+                        return title.replace(".mp3", "");
+                }
+                return title;
+        }
+
 
         @Override
         public String toString() {
-                return title ;
+                return getDisplayName() ;
         }
 
 

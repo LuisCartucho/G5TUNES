@@ -154,7 +154,7 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickPlayStop(ActionEvent actionEvent) {
-        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getArtist();
+        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getFilePath();
         Media musicFileMedia = new Media(new File(musicFileString).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(musicFileMedia);
         btnPlayPause.setOnAction(event -> {

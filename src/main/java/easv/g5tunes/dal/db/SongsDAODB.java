@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
 public class SongsDAODB implements ISongsDAO {
 
     private DBConnection con = new DBConnection();
@@ -28,7 +28,7 @@ public class SongsDAODB implements ISongsDAO {
                 String title = rs.getString("title");
                 String artist = rs.getString("artist");
                 //String filePath = rs.getString("filePath");
-                Songs songs1 = new Songs(title, artist);
+                Songs songs1 = new Songs(title, artist, );
                 songs.add(songs1);
             }
         } catch (SQLServerException e) {
@@ -56,4 +56,4 @@ public class SongsDAODB implements ISongsDAO {
 
 
 }
-
+   */
