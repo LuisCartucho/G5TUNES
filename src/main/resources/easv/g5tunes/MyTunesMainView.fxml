@@ -30,12 +30,12 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label fx:id="txtSongName" layoutX="350.0" layoutY="78.0" prefHeight="30.0" prefWidth="60.0" text="(None)" textFill="WHITE">
+        <Label fx:id="txtSongName" alignment="CENTER" layoutX="330.0" layoutY="84.0" prefHeight="30.0" prefWidth="228.0" text="(None)" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="413.0" layoutY="78.0" prefHeight="30.0" prefWidth="74.0" text="is Playing" textFill="WHITE">
+        <Label layoutX="561.0" layoutY="84.0" prefHeight="30.0" prefWidth="74.0" text="is Playing" textFill="WHITE">
             <font>
                 <Font size="18.0" />
             </font>

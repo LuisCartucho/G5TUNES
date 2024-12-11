@@ -29,7 +29,8 @@ public class MyTunesController implements Initializable {
 
     private final SongsModel songsModel = new SongsModel();
     SongService songService = new SongService();
-
+    private SongsDAO songsDAO = new SongsDAO();
+    private MediaPlayer currentMediaPlayer;
 
     @FXML
     private Button btnSongEdit;
@@ -157,205 +158,86 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickPlayStop(ActionEvent actionEvent) {
-
         Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
 
         if (selectedSong == null) {
-            // Show a warning if no song is selected
-            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-            warningAlert.setTitle("No Selection");
-            warningAlert.setHeaderText("No song selected");
-            warningAlert.setContentText("Please select a song to play.");
-            warningAlert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select a song to play.");
+            alert.showAndWait();
             return;
         }
 
-        String musicFileString = selectedSong.getFilePath();
-        File musicFile = new File(musicFileString);
+        String musicFilePath = selectedSong.getFilePath();
+        File musicFile = new File(musicFilePath);
 
         if (!musicFile.exists()) {
-            // Show an error if the file doesn't exist
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("File Not Found");
-            errorAlert.setHeaderText("Music file not found");
-            errorAlert.setContentText("The selected file does not exist: " + musicFileString);
-            errorAlert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("File Not Found");
+            alert.setHeaderText(null);
+            alert.setContentText("The selected file does not exist: " + musicFilePath);
+            alert.showAndWait();
             return;
         }
 
-        // Stop and dispose of the existing MediaPlayer, if any
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.dispose();
-            mediaPlayer = null; // Explicitly set to null to ensure a fresh instance
+        String musicFileURI = musicFile.toURI().toString();
+
+        if (currentMediaPlayer != null &&
+                currentMediaPlayer.getStatus() != MediaPlayer.Status.DISPOSED &&
+                currentMediaPlayer.getMedia().getSource().equals(musicFileURI)) {
+
+            if (currentMediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+                currentMediaPlayer.pause();
+                btnPlayPause.setSelected(false);
+            } else {
+                currentMediaPlayer.play();
+                btnPlayPause.setSelected(true);
+            }
+            return;
+        }
+
+        if (currentMediaPlayer != null) {
+            currentMediaPlayer.stop();
+            currentMediaPlayer.dispose();
         }
 
         try {
-            // Create a new Media instance
-            currentMedia = new Media(musicFile.toURI().toString());
+            Media musicFileMedia = new Media(musicFileURI);
+            currentMediaPlayer = new MediaPlayer(musicFileMedia);
 
-            // Create a new MediaPlayer for the selected song
-            mediaPlayer = new MediaPlayer(currentMedia);
+            // Set initial volume to 50%
+            double initialVolume = 0.5;
+            audioVolume.setValue(initialVolume);
+            currentMediaPlayer.setVolume(initialVolume);
 
-            // Play the selected song
-            mediaPlayer.play();
-            btnPlayPause.setSelected(true); // Set the toggle button to "playing"
+            // Update MediaPlayer volume dynamically when the slider changes
+            audioVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
+                currentMediaPlayer.setVolume(newVal.doubleValue());
+            });
 
-            // Bind the progress bar to the song's progress
-            mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-                if (mediaPlayer.getTotalDuration() != null) {
-                    double progress = newTime.toSeconds() / mediaPlayer.getTotalDuration().toSeconds();
+            currentMediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+                if (currentMediaPlayer.getTotalDuration() != null) {
+                    double progress = newTime.toSeconds() / currentMediaPlayer.getTotalDuration().toSeconds();
                     audioProgressBar.setProgress(progress);
                 }
             });
 
-            // Reset play/pause and progress bar when the song ends
-            mediaPlayer.setOnEndOfMedia(() -> {
+            currentMediaPlayer.setOnEndOfMedia(() -> {
                 btnPlayPause.setSelected(false);
                 audioProgressBar.setProgress(0);
             });
 
+            currentMediaPlayer.play();
+            btnPlayPause.setSelected(true);
+            txtSongName.setText(selectedSong.getTitle());
         } catch (Exception e) {
-            // Handle unexpected issues with MediaPlayer creation
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Playback Error");
-            errorAlert.setHeaderText("An error occurred while trying to play the song.");
-            errorAlert.setContentText("Error details: " + e.getMessage());
-            errorAlert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Playback Error");
+            alert.setHeaderText(null);
+            alert.setContentText("An error occurred while trying to play the song: " + e.getMessage());
+            alert.showAndWait();
         }
-
-//        Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
-//
-//        if (selectedSong == null) {
-//            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-//            warningAlert.setTitle("No Selection");
-//            warningAlert.setHeaderText("No song selected");
-//            warningAlert.setContentText("Please select a song to play.");
-//            warningAlert.showAndWait();
-//            return;
-//        }
-//
-//        String musicFileString = selectedSong.getFilePath();
-//        File musicFile = new File(musicFileString);
-//
-//        if (!musicFile.exists()) {
-//            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-//            errorAlert.setTitle("File Not Found");
-//            errorAlert.setHeaderText("Music file not found");
-//            errorAlert.setContentText("The selected file does not exist: " + musicFileString);
-//            errorAlert.showAndWait();
-//            return;
-//        }
-//
-//        // Stop and dispose of the existing MediaPlayer if a new song is selected
-//        if (mediaPlayer != null) {
-//            mediaPlayer.stop();
-//            mediaPlayer.dispose();
-//        }
-//
-//        // Create a new MediaPlayer for the selected song
-//        currentMedia = new Media(musicFile.toURI().toString());
-//        mediaPlayer = new MediaPlayer(currentMedia);
-//
-//        // Update the play/pause toggle button
-//        btnPlayPause.setOnAction(event -> {
-//            if (btnPlayPause.isSelected()) {
-//                mediaPlayer.play();
-//            } else {
-//                mediaPlayer.pause();
-//            }
-//        });
-//
-//        // Start playing the new song
-//        mediaPlayer.play();
-//        btnPlayPause.setSelected(true); // Update button state to "playing"
-//
-//        // Update the progress bar based on the song's progress
-//        mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-//            if (mediaPlayer.getTotalDuration() != null) {
-//                double progress = newTime.toSeconds() / mediaPlayer.getTotalDuration().toSeconds();
-//                audioProgressBar.setProgress(progress);
-//            }
-//        });
-//
-//        // Handle the end of the song to reset the button and progress bar
-//        mediaPlayer.setOnEndOfMedia(() -> {
-//            btnPlayPause.setSelected(false);
-//            audioProgressBar.setProgress(0);
-//        });
-
-        //88
-//        Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
-//
-//        if (selectedSong == null) {
-//
-//            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-//            warningAlert.setTitle("No Selection");
-//            warningAlert.setHeaderText("No song selected");
-//            warningAlert.setContentText("Please select a song to play.");
-//            warningAlert.showAndWait();
-//            return;
-//        }
-//
-//
-//        String musicFileString = selectedSong.getFilePath();
-//        File musicFile = new File(musicFileString);
-//
-//        if(!musicFile.exists()) {
-//
-//            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-//            errorAlert.setTitle("File Not Found");
-//            errorAlert.setHeaderText("Music file not found");
-//            errorAlert.setContentText("The selected file does not exist:" + musicFileString);
-//            errorAlert.showAndWait();
-//            return;
-//        }
-//
-//        // Stop and dispose of the existing MediaPlayer, if any
-//        if (mediaPlayer != null) {
-//            mediaPlayer.stop();
-//            mediaPlayer.dispose();
-//        }
-//
-//
-//        // This creates a new MediaPlayer for the selected song
-//        currentMedia = new Media(musicFile.toURI().toString());
-//        mediaPlayer = new MediaPlayer(currentMedia);
-//
-//        //Handles play/pause toggle
-//        btnPlayPause.setOnAction(event -> {
-//            if (btnPlayPause.isSelected()) {
-//                mediaPlayer.play();
-//            } else {
-//                mediaPlayer.pause();
-//            }
-//        });
-//
-//        // Start playing the new song
-//        mediaPlayer.play();
-//        btnPlayPause.setSelected(true); // Update button state to "playing"
-//
-//        mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-//            double progress = newTime.toSeconds() / mediaPlayer.getTotalDuration().toSeconds();
-//            audioProgressBar.setProgress(progress);
-//        });
-
-
-
-
-        //54
-
-        //        String musicFileString = lstViewSongs.getSelectionModel().getSelectedItem().getFilePath();
-//        Media musicFileMedia = new Media(new File(musicFileString).toURI().toString());
-//        MediaPlayer mediaPlayer = new MediaPlayer(musicFileMedia);
-//        btnPlayPause.setOnAction(event -> {
-//            if(btnPlayPause.isSelected()) {
-//                mediaPlayer.play();
-//            } else {
-//                mediaPlayer.pause();
-//            }
-//        });
-
     }
 
     public void onClickFastForward(ActionEvent actionEvent) {
@@ -370,15 +252,10 @@ public class MyTunesController implements Initializable {
     public void onClickRewind(ActionEvent actionEvent) {
     }
 
-
-
     private void showAlertWindow(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
         alert.showAndWait();
     }
-
-    private SongsDAO songsDAO = new SongsDAO();
-
 
     public void loadSongsFromFolder(String folderPath) {
         // Fetch songs using SongsDAO
