@@ -70,7 +70,18 @@ public class MyTunesController implements Initializable {
     public void onClickFilterSearch(ActionEvent actionEvent) {
     }
 
-    public void onClickPlaylistsNew(ActionEvent actionEvent) {
+    public void onClickPlaylistsNew(ActionEvent actionEvent) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/easv/g5tunes/newEditPlaylist.fxml"));
+        Parent scene = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(scene));
+        stage.setResizable(false);
+        stage.setTitle("New Playlist");
+        stage.centerOnScreen();
+
+        stage.show();
 
     }
 
