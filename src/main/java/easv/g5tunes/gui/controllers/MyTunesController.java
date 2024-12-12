@@ -5,6 +5,7 @@ import easv.g5tunes.bll.SongService;
 import easv.g5tunes.dal.SongsDAO;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -93,7 +94,40 @@ public class MyTunesController implements Initializable {
 
     }
 
-    public void onClickPlaylistsEdit(ActionEvent actionEvent) {
+    public void updatePlaylistName(String oldName, String newName) {
+        ObservableList<String> playlist = lstViewPlaylists.getItems();
+
+        int index = playlist.indexOf(oldName);
+        if (index != -1) {
+            playlist.set(index, newName);
+        }
+    }
+
+    public void onClickPlaylistEdit(ActionEvent actionEvent) throws IOException {
+
+        String selectedPlaylist = lstViewPlaylists.getSelectionModel().getSelectedItem();
+
+        if (selectedPlaylist != null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/easv/g5tunes/playlistEditMenu.fxml"));
+            Parent scene = loader.load();
+
+            playListEditMenuController controller = loader.getController();
+            controller.setMainController(this);
+            controller.setPlaylistName(selectedPlaylist);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(scene));
+            stage.setResizable(false);
+            stage.setTitle("Edit playlist");
+            stage.centerOnScreen();
+
+            stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a playlist to edit.");
+            alert.showAndWait();
+        }
+
     }
 
     public void onClickPlaylistsDelete(ActionEvent actionEvent) {
@@ -292,7 +326,8 @@ public class MyTunesController implements Initializable {
         loadSongsFromFolder(folderPath);
     }
 
-    }
+
+}
 
 
 
