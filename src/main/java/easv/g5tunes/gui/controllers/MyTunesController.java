@@ -3,6 +3,7 @@ package easv.g5tunes.gui.controllers;
 import easv.g5tunes.be.Songs;
 import easv.g5tunes.bll.SongService;
 import easv.g5tunes.dal.SongsDAO;
+import easv.g5tunes.dal.db.DBConnection;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
 import javafx.collections.ObservableList;
@@ -22,6 +23,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -322,12 +327,48 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\Ali Emre\\Desktop\\mp3 files for myTunes"; // Path to your folder
+        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
         loadSongsFromFolder(folderPath);
+        populatePlaylists();
     }
 
 
+    DBConnection dbc = new DBConnection();
+
+    // Method to fetch all playlist table names
+    private List<String> getAllPlaylists() {
+        List<String> playlistNames = new ArrayList<>();
+        String query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'";
+
+        try (Connection con = dbc.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            // Iterate over the result set and add table names (playlists) to the list
+            while (rs.next()) {
+                String tableName = rs.getString("table_name");
+                playlistNames.add(tableName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();  // You may want to show an alert here as well
+        }
+
+        return playlistNames;
+    }
+
+    // Method to populate the ListView with playlist names
+    public void populatePlaylists() {
+        // Get all playlists from the database
+        List<String> playlists = getAllPlaylists();
+
+        // Add the playlists to the ListView
+        lstViewPlaylists.getItems().clear();  // Clear any previous items
+        lstViewPlaylists.getItems().addAll(playlists);  // Add the new items
+    }
 }
+
+
+
 
 
 
