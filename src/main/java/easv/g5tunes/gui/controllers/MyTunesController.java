@@ -2,6 +2,7 @@ package easv.g5tunes.gui.controllers;
 
 import easv.g5tunes.be.Songs;
 import easv.g5tunes.bll.SongService;
+import easv.g5tunes.bll.FilterService;
 import easv.g5tunes.dal.SongsDAO;
 import easv.g5tunes.dal.db.DBConnection;
 import easv.g5tunes.exceptions.MyTuneExceptions;
@@ -56,6 +57,10 @@ public class MyTunesController implements Initializable {
     private ProgressBar audioProgressBar;
     @FXML
     private ToggleButton btnPlayPause;
+    @FXML
+    public Button btnNewSong;
+    @FXML
+    private Button btnFilter;
 
     private MediaPlayer mediaPlayer;
     private Media currentMedia;
@@ -331,7 +336,6 @@ public class MyTunesController implements Initializable {
         loadSongsFromFolder(folderPath);
         populatePlaylists();
     }
-
 
     DBConnection dbc = new DBConnection();
 
