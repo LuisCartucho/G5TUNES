@@ -7,6 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 
 public class NewEditPlaylistController {
@@ -30,26 +32,23 @@ public class NewEditPlaylistController {
             return;
         }
 
-        // Sanitize playlist name (replace invalid characters with '_')
-        String sanitizedPlaylistName = playlistName.replaceAll("[^a-zA-Z0-9_]", "_");
+        // Sanitize playlist name (optional for safety)
+        String sanitizedPlaylistName = playlistName.replaceAll("[^a-zA-Z0-9_ ]", "_");
 
-        // SQL query to create the playlist table
-        String createTableSQL = String.format(
-                "CREATE TABLE %s (" +
-                        "id INT PRIMARY KEY IDENTITY(1,1), " +
-                        "title NVARCHAR(255) NOT NULL, " +
-                        "artist NVARCHAR(255) NOT NULL, " +
-                        "filepath NVARCHAR(MAX) NOT NULL)",
-                sanitizedPlaylistName);
+        // SQL query to insert the playlist name into the Playlists table
+        String insertPlaylistSQL = "INSERT INTO Playlists (playlistName) VALUES (?)";
 
         try (Connection con = dbc.getConnection();
-             Statement stmt = con.createStatement()) {
+             PreparedStatement stmt = con.prepareStatement(insertPlaylistSQL)) {
 
-            // Execute the SQL query
-            stmt.execute(createTableSQL);
+            // Set the playlist name parameter
+            stmt.setString(1, sanitizedPlaylistName);
+
+            // Execute the query
+            stmt.executeUpdate();
 
             // Notify the user of success
-            showAlert("Success", "Playlist '" + playlistName + "' created successfully!");
+            showAlert("Success", "Playlist '" + playlistName + "' added successfully!");
 
             // Add the playlist name to the ListView in the main UI
             if (mainController != null) {
@@ -59,8 +58,10 @@ public class NewEditPlaylistController {
             // Close the playlist creation window
             ((javafx.stage.Stage) txtFieldNewOrEditPlaylist.getScene().getWindow()).close();
 
+        } catch (SQLIntegrityConstraintViolationException e) {
+            showAlert("Error", "Playlist '" + playlistName + "' already exists!");
         } catch (Exception e) {
-            showAlert("Error", "Failed to create playlist: " + e.getMessage());
+            showAlert("Error", "Failed to add playlist: " + e.getMessage());
         }
     }
 
