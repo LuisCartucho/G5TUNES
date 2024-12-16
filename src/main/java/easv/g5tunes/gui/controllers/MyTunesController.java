@@ -64,6 +64,8 @@ public class MyTunesController implements Initializable {
     @FXML
     private Button btnFilter;
 
+    private int currentSongIndex = -1;
+
     private SongsDAODB dao;
 
 
@@ -225,6 +227,13 @@ public class MyTunesController implements Initializable {
     public void onClickPlayStop(ActionEvent actionEvent) {
         Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
 
+        if (selectedSong != null) {
+            currentSongIndex = lstViewSongs.getSelectionModel().getSelectedIndex();
+            playSong(selectedSong);
+        } else {
+            showAlert("No Song Selected", "Please select a song to play.");
+        }
+
         if (selectedSong == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No Selection");
@@ -334,7 +343,7 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
+        String folderPath = "C:\\Users\\Ali Emre\\Desktop\\mp3 files for myTunes"; // Path to your folder
         loadSongsFromFolder(folderPath);
         populatePlaylists();
         dao = new SongsDAODB();
@@ -391,6 +400,81 @@ public class MyTunesController implements Initializable {
         } catch (SQLException e) {
             System.err.println("Error saving songs to the database: " + e.getMessage());
         }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void playSong(Songs song) {
+        if (song == null) {
+            showAlert("No Song Selected", "Please select a song to play.");
+            return;
+        }
+
+        String musicFilePath = song.getFilePath();
+        File musicFile = new File(musicFilePath);
+
+        if (!musicFile.exists()) {
+            showAlert("File not found", "The file does not exist: " + musicFilePath);
+            return;
+        }
+
+        String musicFileURI = musicFile.toURI().toString();
+
+        if (currentMediaPlayer != null) {
+            currentMediaPlayer.stop();
+            currentMediaPlayer.dispose();
+        }
+
+        try {
+            Media media = new Media(musicFileURI);
+            currentMediaPlayer = new MediaPlayer(media);
+
+            currentMediaPlayer.setVolume(audioVolume.getValue());
+            currentMediaPlayer.play();
+
+            txtSongName.setText(song.getTitle());
+            btnPlayPause.setSelected(true);
+        } catch (Exception e) {
+            showAlert("Playback Error", "An error occurred: " + e.getMessage());
+        }
+    }
+
+    public void onClickBtnNext(ActionEvent actionEvent) {
+        ObservableList<Songs> songsList = lstViewSongs.getItems();
+
+        if (songsList.isEmpty()) {
+            showAlert("No songs", "There are no songs in the list.");
+            return;
+        }
+
+        //Incrementing the index
+        currentSongIndex = (currentSongIndex + 1) % songsList.size();
+
+        Songs nextSong = songsList.get(currentSongIndex);
+        lstViewSongs.getSelectionModel().select(nextSong);
+        playSong(nextSong);
+    }
+
+    public void onClickBtnPrevious(ActionEvent actionEvent) {
+        ObservableList<Songs> songsList = lstViewSongs.getItems();
+
+        if (songsList.isEmpty()) {
+            showAlert("No Songs", "There are no songs in the list.");
+            return;
+        }
+
+        // Decrement the index
+        currentSongIndex = (currentSongIndex - 1 + songsList.size()) % songsList.size();
+
+        Songs previousSong = songsList.get(currentSongIndex);
+        lstViewSongs.getSelectionModel().select(previousSong);
+        playSong(previousSong);
     }
 }
 

@@ -60,13 +60,13 @@
          <font>
             <Font size="30.0" />
          </font></ToggleButton>
-        <ToggleButton layoutX="236.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickFastForward" text="⏩">
+        <ToggleButton layoutX="236.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickBtnNext" text="⏩">
          <font>
             <Font size="18.0" />
          </font></ToggleButton>
       <Button layoutX="308.0" layoutY="565.0" mnemonicParsing="false" onAction="#OnClickSongonPlaylistScrollUp" text="⬆" />
       <Button layoutX="436.0" layoutY="179.0" mnemonicParsing="false" onAction="#onClickAddSongsToPlaylist" text="⬅" />
-      <ToggleButton layoutX="96.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickRewind" text="⏪">
+      <ToggleButton layoutX="96.0" layoutY="34.0" mnemonicParsing="false" onAction="#onClickBtnPrevious" text="⏪">
          <font>
             <Font size="18.0" />
          </font>
