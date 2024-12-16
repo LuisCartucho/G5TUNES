@@ -343,9 +343,9 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\Ali Emre\\Desktop\\mp3 files for myTunes"; // Path to your folder
+        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
         loadSongsFromFolder(folderPath);
-        populatePlaylists();
+        loadPlaylistsFromDatabase();
         dao = new SongsDAODB();
         // Automatically save the songs in lstViewSongs to the database
         saveSongsToDatabase();
@@ -353,35 +353,25 @@ public class MyTunesController implements Initializable {
 
     DBConnection dbc = new DBConnection();
 
-    // Method to fetch all playlist table names
-    private List<String> getAllPlaylists() {
-        List<String> playlistNames = new ArrayList<>();
-        String query = "SELECT table_name FROM information_schema.tables WHERE table_type = 'BASE TABLE'";
+    public void loadPlaylistsFromDatabase() {
+        String selectPlaylistsSQL = "SELECT playlistName FROM Playlists";
 
         try (Connection con = dbc.getConnection();
              Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+             ResultSet rs = stmt.executeQuery(selectPlaylistsSQL)) {
 
-            // Iterate over the result set and add table names (playlists) to the list
+            // Clear the current ListView
+            lstViewPlaylists.getItems().clear();
+
+            // Add each playlist name to the ListView
             while (rs.next()) {
-                String tableName = rs.getString("playlistName");
-                playlistNames.add(tableName);
+                String playlistName = rs.getString("playlistName");
+                lstViewPlaylists.getItems().add(playlistName);
             }
+
         } catch (Exception e) {
-            e.printStackTrace();  // You may want to show an alert here as well
+            System.err.println("Error loading playlists: " + e.getMessage());
         }
-
-        return playlistNames;
-    }
-
-    // Method to populate the ListView with playlist names
-    public void populatePlaylists() {
-        // Get all playlists from the database
-        List<String> playlists = getAllPlaylists();
-
-        // Add the playlists to the ListView
-        lstViewPlaylists.getItems().clear();  // Clear any previous items
-        lstViewPlaylists.getItems().addAll(playlists);  // Add the new items
     }
 
     private void saveSongsToDatabase() {
