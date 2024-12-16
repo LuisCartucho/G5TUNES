@@ -227,40 +227,17 @@ public class MyTunesController implements Initializable {
     public void onClickPlayStop(ActionEvent actionEvent) {
         Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
 
-        if (selectedSong != null) {
-            currentSongIndex = lstViewSongs.getSelectionModel().getSelectedIndex();
-            playSong(selectedSong);
-        } else {
-            showAlert("No Song Selected", "Please select a song to play.");
-        }
-
         if (selectedSong == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select a song to play.");
-            alert.showAndWait();
+            showAlert("No Song Selected", "Please select a song to play.");
             return;
         }
 
         String musicFilePath = selectedSong.getFilePath();
         File musicFile = new File(musicFilePath);
-
-        if (!musicFile.exists()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("File Not Found");
-            alert.setHeaderText(null);
-            alert.setContentText("The selected file does not exist: " + musicFilePath);
-            alert.showAndWait();
-            return;
-        }
-
         String musicFileURI = musicFile.toURI().toString();
 
-        if (currentMediaPlayer != null &&
-                currentMediaPlayer.getStatus() != MediaPlayer.Status.DISPOSED &&
-                currentMediaPlayer.getMedia().getSource().equals(musicFileURI)) {
-
+        // Check if the MediaPlayer exists and is playing the selected song
+        if (currentMediaPlayer != null && currentMediaPlayer.getMedia().getSource().equals(musicFileURI)) {
             if (currentMediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
                 currentMediaPlayer.pause();
                 btnPlayPause.setSelected(false);
@@ -268,50 +245,100 @@ public class MyTunesController implements Initializable {
                 currentMediaPlayer.play();
                 btnPlayPause.setSelected(true);
             }
-            return;
+        } else {
+            // Stop and dispose of the previous MediaPlayer
+            if (currentMediaPlayer != null) {
+                currentMediaPlayer.stop();
+                currentMediaPlayer.dispose();
+            }
+
+            // Initialize a new MediaPlayer for the selected song
+            try {
+                Media media = new Media(musicFileURI);
+                currentMediaPlayer = new MediaPlayer(media);
+
+                // Set volume
+                currentMediaPlayer.setVolume(audioVolume.getValue());
+                audioVolume.valueProperty().addListener((obs, oldVal, newVal) -> currentMediaPlayer.setVolume(newVal.doubleValue()));
+
+                // Update progress bar
+                currentMediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+                    if (currentMediaPlayer.getTotalDuration() != null) {
+                        double progress = newTime.toSeconds() / currentMediaPlayer.getTotalDuration().toSeconds();
+                        audioProgressBar.setProgress(progress);
+                    }
+                });
+
+                currentMediaPlayer.setOnEndOfMedia(() -> {
+                    btnPlayPause.setSelected(false);
+                    audioProgressBar.setProgress(0);
+                });
+
+                // Play the new song
+                currentMediaPlayer.play();
+                txtSongName.setText(selectedSong.getTitle());
+                btnPlayPause.setSelected(true);
+            } catch (Exception e) {
+                showAlert("Playback Error", "An error occurred while playing: " + e.getMessage());
+            }
         }
-
-        if (currentMediaPlayer != null) {
-            currentMediaPlayer.stop();
-            currentMediaPlayer.dispose();
-        }
-
-        try {
-            Media musicFileMedia = new Media(musicFileURI);
-            currentMediaPlayer = new MediaPlayer(musicFileMedia);
-
-            // Set initial volume to 50%
-            double initialVolume = 0.5;
-            audioVolume.setValue(initialVolume);
-            currentMediaPlayer.setVolume(initialVolume);
-
-            // Update MediaPlayer volume dynamically when the slider changes
-            audioVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
-                currentMediaPlayer.setVolume(newVal.doubleValue());
-            });
-
-            currentMediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-                if (currentMediaPlayer.getTotalDuration() != null) {
-                    double progress = newTime.toSeconds() / currentMediaPlayer.getTotalDuration().toSeconds();
-                    audioProgressBar.setProgress(progress);
-                }
-            });
-
-            currentMediaPlayer.setOnEndOfMedia(() -> {
-                btnPlayPause.setSelected(false);
-                audioProgressBar.setProgress(0);
-            });
-
-            currentMediaPlayer.play();
-            btnPlayPause.setSelected(true);
-            txtSongName.setText(selectedSong.getTitle());
-        } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Playback Error");
-            alert.setHeaderText(null);
-            alert.setContentText("An error occurred while trying to play the song: " + e.getMessage());
-            alert.showAndWait();
-        }
+//        Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
+//
+//        if (selectedSong == null) {
+//            showAlert("No Song Selected", "Please select a song to play.");
+//            return;
+//        }
+//
+//        String musicFilePath = selectedSong.getFilePath();
+//        File musicFile = new File(musicFilePath);
+//        String musicFileURI = musicFile.toURI().toString();
+//
+//        // Check if the MediaPlayer exists and is playing the selected song
+//        if (currentMediaPlayer != null && currentMediaPlayer.getMedia().getSource().equals(musicFileURI)) {
+//            if (currentMediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+//                currentMediaPlayer.pause();
+//                btnPlayPause.setSelected(false);
+//            } else {
+//                currentMediaPlayer.play();
+//                btnPlayPause.setSelected(true);
+//            }
+//        } else {
+//            // Stop and dispose of the previous MediaPlayer
+//            if (currentMediaPlayer != null) {
+//                currentMediaPlayer.stop();
+//                currentMediaPlayer.dispose();
+//            }
+//
+//            // Initialize a new MediaPlayer for the selected song
+//            try {
+//                Media media = new Media(musicFileURI);
+//                currentMediaPlayer = new MediaPlayer(media);
+//
+//                // Set volume
+//                currentMediaPlayer.setVolume(audioVolume.getValue());
+//                audioVolume.valueProperty().addListener((obs, oldVal, newVal) -> currentMediaPlayer.setVolume(newVal.doubleValue()));
+//
+//                // Update progress bar
+//                currentMediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+//                    if (currentMediaPlayer.getTotalDuration() != null) {
+//                        double progress = newTime.toSeconds() / currentMediaPlayer.getTotalDuration().toSeconds();
+//                        audioProgressBar.setProgress(progress);
+//                    }
+//                });
+//
+//                currentMediaPlayer.setOnEndOfMedia(() -> {
+//                    btnPlayPause.setSelected(false);
+//                    audioProgressBar.setProgress(0);
+//                });
+//
+//                // Play the new song
+//                currentMediaPlayer.play();
+//                txtSongName.setText(selectedSong.getTitle());
+//                btnPlayPause.setSelected(true);
+//            } catch (Exception e) {
+//                showAlert("Playback Error", "An error occurred while playing: " + e.getMessage());
+//            }
+//        }
     }
 
     public void onClickFastForward(ActionEvent actionEvent) {
