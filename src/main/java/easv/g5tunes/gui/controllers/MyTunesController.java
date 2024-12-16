@@ -5,6 +5,7 @@ import easv.g5tunes.bll.SongService;
 import easv.g5tunes.bll.FilterService;
 import easv.g5tunes.dal.SongsDAO;
 import easv.g5tunes.dal.db.DBConnection;
+import easv.g5tunes.dal.db.SongsDAODB;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
 import javafx.collections.ObservableList;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +64,8 @@ public class MyTunesController implements Initializable {
     @FXML
     private Button btnFilter;
 
-    private MediaPlayer mediaPlayer;
-    private Media currentMedia;
+    private SongsDAODB dao;
+
 
     public void refreshListView() {
         lstViewSongs.refresh(); // Ensure the updated data appears in ListView
@@ -335,6 +337,9 @@ public class MyTunesController implements Initializable {
         String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
         loadSongsFromFolder(folderPath);
         populatePlaylists();
+        dao = new SongsDAODB();
+        // Automatically save the songs in lstViewSongs to the database
+        saveSongsToDatabase();
     }
 
     DBConnection dbc = new DBConnection();
@@ -350,7 +355,7 @@ public class MyTunesController implements Initializable {
 
             // Iterate over the result set and add table names (playlists) to the list
             while (rs.next()) {
-                String tableName = rs.getString("table_name");
+                String tableName = rs.getString("playlistName");
                 playlistNames.add(tableName);
             }
         } catch (Exception e) {
@@ -369,7 +374,27 @@ public class MyTunesController implements Initializable {
         lstViewPlaylists.getItems().clear();  // Clear any previous items
         lstViewPlaylists.getItems().addAll(playlists);  // Add the new items
     }
+
+    private void saveSongsToDatabase() {
+        try {
+            // Fetch all songs displayed in the ListView
+            ObservableList<Songs> songsObservableList = lstViewSongs.getItems();
+            List<Songs> songsList = new ArrayList<>(songsObservableList);
+
+            // Save songs to the database
+            if (!songsList.isEmpty()) {
+                dao.addSongs(songsList);
+                System.out.println("Songs successfully saved to the database.");
+            } else {
+                System.out.println("No songs to save.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error saving songs to the database: " + e.getMessage());
+        }
+    }
 }
+
+
 
 
 

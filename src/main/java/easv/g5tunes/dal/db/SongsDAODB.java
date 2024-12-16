@@ -12,48 +12,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
-public class SongsDAODB implements ISongsDAO {
 
-    private DBConnection con = new DBConnection();
+public class SongsDAODB {
 
-    public List<Songs> getAll() throws MyTuneExceptions {
-        List<Songs> songs = new ArrayList<>();
-        try {
-            Connection c = con.getConnection();
-            String sql = "SELECT * FROM Songs";
-            PreparedStatement stmt = c.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String title = rs.getString("title");
-                String artist = rs.getString("artist");
-                //String filePath = rs.getString("filePath");
-                Songs songs1 = new Songs(title, artist, );
-                songs.add(songs1);
+        private DBConnection con = new DBConnection();
+
+        public void addSongs(List<Songs> songsList) throws SQLException {
+            String sql = "INSERT INTO Songs (title, artist, filePath) VALUES (?, ?, ?)";
+            try (Connection connection = con.getConnection();
+                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+                for (Songs song : songsList) {
+                    stmt.setString(1, song.getTitle());
+                    stmt.setString(2, song.getArtist());
+                    stmt.setString(3, song.getFilePath());
+                    stmt.addBatch(); // Add each song to a batch
+                }
+
+                stmt.executeBatch(); // Execute all insertions at once
+                System.out.println("Songs saved to the database successfully!");
+            } catch (SQLException e) {
+                System.err.println("Error saving songs to the database: " + e.getMessage());
+                throw e;
             }
-        } catch (SQLServerException e) {
-            throw new MyTuneExceptions(e);
-        } catch (SQLException e) {
-            throw new MyTuneExceptions(e);
         }
-        return songs;
     }
-
-    @Override
-    public Songs add(Songs songs) throws MyTuneExceptions {
-        return null;
-    }
-
-    @Override
-    public void delete(Songs songs) throws MyTuneExceptions {
-
-    }
-
-    @Override
-    public void update(Songs songs) throws MyTuneExceptions {
-
-    }
-
-
-}
-   */
