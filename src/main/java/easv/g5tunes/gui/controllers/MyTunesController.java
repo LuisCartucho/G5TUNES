@@ -236,7 +236,7 @@ public class MyTunesController implements Initializable {
         File musicFile = new File(musicFilePath);
         String musicFileURI = musicFile.toURI().toString();
 
-        // Check if the MediaPlayer exists and is playing the selected song
+        // Check if MediaPlayer exists and if the selected song is already playing
         if (currentMediaPlayer != null && currentMediaPlayer.getMedia().getSource().equals(musicFileURI)) {
             if (currentMediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
                 currentMediaPlayer.pause();
@@ -246,20 +246,29 @@ public class MyTunesController implements Initializable {
                 btnPlayPause.setSelected(true);
             }
         } else {
-            // Stop and dispose of the previous MediaPlayer
+            // Store the current volume level
+            double lastVolumeLevel = audioVolume.getValue();
+
+            // Stop and dispose of previous MediaPlayer
             if (currentMediaPlayer != null) {
                 currentMediaPlayer.stop();
                 currentMediaPlayer.dispose();
             }
 
-            // Initialize a new MediaPlayer for the selected song
             try {
+                // Create new MediaPlayer
                 Media media = new Media(musicFileURI);
                 currentMediaPlayer = new MediaPlayer(media);
 
-                // Set volume
-                currentMediaPlayer.setVolume(audioVolume.getValue());
-                audioVolume.valueProperty().addListener((obs, oldVal, newVal) -> currentMediaPlayer.setVolume(newVal.doubleValue()));
+                // Restore volume level
+                currentMediaPlayer.setVolume(lastVolumeLevel / 100.0);
+                audioVolume.setValue(lastVolumeLevel); // Update the slider visually
+
+                // Bind slider to MediaPlayer volume
+                audioVolume.valueProperty().addListener((obs, oldVal, newVal) -> {
+                    double volume = newVal.doubleValue() / 100.0; // Scale slider [0-100] to MediaPlayer [0-1]
+                    currentMediaPlayer.setVolume(volume);
+                });
 
                 // Update progress bar
                 currentMediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
@@ -269,76 +278,16 @@ public class MyTunesController implements Initializable {
                     }
                 });
 
-                currentMediaPlayer.setOnEndOfMedia(() -> {
-                    btnPlayPause.setSelected(false);
-                    audioProgressBar.setProgress(0);
-                });
-
-                // Play the new song
                 currentMediaPlayer.play();
-                txtSongName.setText(selectedSong.getTitle());
                 btnPlayPause.setSelected(true);
+                txtSongName.setText(selectedSong.getTitle());
             } catch (Exception e) {
                 showAlert("Playback Error", "An error occurred while playing: " + e.getMessage());
             }
         }
-//        Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
-//
-//        if (selectedSong == null) {
-//            showAlert("No Song Selected", "Please select a song to play.");
-//            return;
-//        }
-//
-//        String musicFilePath = selectedSong.getFilePath();
-//        File musicFile = new File(musicFilePath);
-//        String musicFileURI = musicFile.toURI().toString();
-//
-//        // Check if the MediaPlayer exists and is playing the selected song
-//        if (currentMediaPlayer != null && currentMediaPlayer.getMedia().getSource().equals(musicFileURI)) {
-//            if (currentMediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
-//                currentMediaPlayer.pause();
-//                btnPlayPause.setSelected(false);
-//            } else {
-//                currentMediaPlayer.play();
-//                btnPlayPause.setSelected(true);
-//            }
-//        } else {
-//            // Stop and dispose of the previous MediaPlayer
-//            if (currentMediaPlayer != null) {
-//                currentMediaPlayer.stop();
-//                currentMediaPlayer.dispose();
-//            }
-//
-//            // Initialize a new MediaPlayer for the selected song
-//            try {
-//                Media media = new Media(musicFileURI);
-//                currentMediaPlayer = new MediaPlayer(media);
-//
-//                // Set volume
-//                currentMediaPlayer.setVolume(audioVolume.getValue());
-//                audioVolume.valueProperty().addListener((obs, oldVal, newVal) -> currentMediaPlayer.setVolume(newVal.doubleValue()));
-//
-//                // Update progress bar
-//                currentMediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-//                    if (currentMediaPlayer.getTotalDuration() != null) {
-//                        double progress = newTime.toSeconds() / currentMediaPlayer.getTotalDuration().toSeconds();
-//                        audioProgressBar.setProgress(progress);
-//                    }
-//                });
-//
-//                currentMediaPlayer.setOnEndOfMedia(() -> {
-//                    btnPlayPause.setSelected(false);
-//                    audioProgressBar.setProgress(0);
-//                });
-//
-//                // Play the new song
-//                currentMediaPlayer.play();
-//                txtSongName.setText(selectedSong.getTitle());
-//                btnPlayPause.setSelected(true);
-//            } catch (Exception e) {
-//                showAlert("Playback Error", "An error occurred while playing: " + e.getMessage());
-//            }
-//        }
+
+
+
     }
 
     public void onClickFastForward(ActionEvent actionEvent) {
@@ -367,15 +316,21 @@ public class MyTunesController implements Initializable {
         lstViewSongs.getItems().addAll(songs);
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
+        String folderPath = "C:\\Users\\Ali Emre\\Desktop\\mp3 files for myTunes"; // Path to your folder
         loadSongsFromFolder(folderPath);
         loadPlaylistsFromDatabase();
         dao = new SongsDAODB();
         // Automatically save the songs in lstViewSongs to the database
         saveSongsToDatabase();
+
+        audioVolume.setMin(0);
+        audioVolume.setMax(100);
+        audioVolume.setValue(50); // Default volume at 50%
+        audioProgressBar.setProgress(0.0);
     }
 
     DBConnection dbc = new DBConnection();
