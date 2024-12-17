@@ -1,6 +1,9 @@
 package easv.g5tunes.gui.controllers;
 
 import easv.g5tunes.be.Songs;
+import easv.g5tunes.dal.SongsDAO;
+import easv.g5tunes.dal.db.SongsDAODB;
+import easv.g5tunes.exceptions.MyTuneExceptions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,12 +14,12 @@ import javafx.stage.Stage;
 
 
 import java.io.File;
+import java.sql.SQLException;
 
 public class AddNewSongController {
 
-
-
     private Songs selectedSongs;
+    private SongsDAO dao = new SongsDAO();
 
     public void setSongs(Songs songs) {
         selectedSongs = songs;
@@ -92,22 +95,32 @@ public class AddNewSongController {
         System.out.println("Artist: " + artist);
         System.out.println("File path from TextField: " + filePath);
 
-        if(!title.isEmpty() && !artist.isEmpty() && filePath != null && !filePath.isEmpty() ) {
-            Songs newSong = new Songs(title, artist, filePath);
+        if (!title.isEmpty() && !artist.isEmpty() && filePath != null && !filePath.isEmpty()) {
+            Songs newSong = new Songs(title, artist, filePath); // Updated song details
+            Songs oldSong = selectedSongs; // The original song details
+            SongsDAODB songsDAO = new SongsDAODB();            // Your DAO instance
 
             if (mainController != null) {
-                mainController.addSongToListView(newSong);
-                mainController.deleteSongFromListView();
+                // Update song in the database using the original title and artist
+                try {
+                    if (songsDAO.updateSong(newSong, oldSong.getTitle(), oldSong.getArtist())) {
+                        mainController.addSongToListView(newSong); // Update UI with new song
+                        mainController.deleteSongFromListView(); // Remove old song from UI
+                        System.out.println("Changes have successfully been saved to the database.");
+                    } else {
+                        System.out.println("No changes have been made.");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
-
-            System.out.println("File saved with path: " + filePath);
 
             ((Stage) btnSave.getScene().getWindow()).close();
         } else {
-            System.out.println("All field are required!!");
+            System.out.println("All fields are required!!");
         }
-
     }
+
 
     public void onBtnCancel(ActionEvent actionEvent) {
         ((Stage) btnCancel.getScene().getWindow()).close();

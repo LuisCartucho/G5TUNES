@@ -320,7 +320,7 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\Ali Emre\\Desktop\\mp3 files for myTunes"; // Path to your folder
+        String folderPath = "C:\\Users\\abdul\\Documents\\MyTunes Mp3 Files"; // Path to your folder
         loadSongsFromFolder(folderPath);
         loadPlaylistsFromDatabase();
         dao = new SongsDAODB();

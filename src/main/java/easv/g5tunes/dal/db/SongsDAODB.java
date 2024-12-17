@@ -59,4 +59,28 @@ public class SongsDAODB {
                 throw e;
             }
         }
+
+    public boolean updateSong(Songs updatedSong, String originalTitle, String originalArtist) throws SQLException {
+        String sql = "UPDATE songs SET title = ?, artist = ?, filePath = ? WHERE title = ? AND artist = ?";
+        try (Connection connection = con.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, updatedSong.getTitle());
+            pstmt.setString(2, updatedSong.getArtist());
+            pstmt.setString(3, updatedSong.getFilePath());
+            pstmt.setString(4, originalTitle);
+            pstmt.setString(5, originalArtist);
+            return pstmt.executeUpdate() > 0; // Returns true if the update was successful
+        }
     }
+
+    public boolean deleteSong(String title, String artist) throws SQLException {
+        String sql = "DELETE FROM songs WHERE title = ? AND artist = ?";
+        try (Connection connection = con.getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, title);
+            pstmt.setString(2, artist);
+            return pstmt.executeUpdate() > 0; // Returns true if the deletion was successful
+        }
+    }
+
+}
