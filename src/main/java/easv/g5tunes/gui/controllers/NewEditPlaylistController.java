@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class NewEditPlaylistController {
     @FXML
@@ -18,6 +15,9 @@ public class NewEditPlaylistController {
 
 
     private MyTunesController mainController;
+
+    public NewEditPlaylistController() throws SQLException {
+    }
 
     public void setMainController(MyTunesController mainController) {
         this.mainController = mainController;

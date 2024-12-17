@@ -8,6 +8,7 @@ import easv.g5tunes.dal.db.DBConnection;
 import easv.g5tunes.dal.db.SongsDAODB;
 import easv.g5tunes.exceptions.MyTuneExceptions;
 import easv.g5tunes.gui.model.SongsModel;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
@@ -25,10 +27,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +66,9 @@ public class MyTunesController implements Initializable {
     private int currentSongIndex = -1;
 
     private SongsDAODB dao;
+
+    public MyTunesController() throws SQLException {
+    }
 
 
     public void refreshListView() {
@@ -296,9 +298,6 @@ public class MyTunesController implements Initializable {
     public void OnClickSongonPlaylistScrollUp(ActionEvent actionEvent) {
     }
 
-    public void onClickAddSongsToPlaylist(ActionEvent actionEvent) {
-    }
-
     public void onClickRewind(ActionEvent actionEvent) {
     }
 
@@ -320,10 +319,15 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\abdul\\Documents\\MyTunes Mp3 Files"; // Path to your folder
+        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
         loadSongsFromFolder(folderPath);
         loadPlaylistsFromDatabase();
-        dao = new SongsDAODB();
+        lstViewPlaylists.setOnMouseClicked(this::onPlaylistClicked);
+        try {
+            dao = new SongsDAODB();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         // Automatically save the songs in lstViewSongs to the database
         saveSongsToDatabase();
 
@@ -448,7 +452,154 @@ public class MyTunesController implements Initializable {
         lstViewSongs.getSelectionModel().select(previousSong);
         playSong(previousSong);
     }
+    @FXML
+    private void onClickAddSongsToPlaylist(ActionEvent event) {
+        // Get the selected playlist
+        String selectedPlaylist = lstViewPlaylists.getSelectionModel().getSelectedItem();
+        if (selectedPlaylist == null) {
+            System.out.println("No playlist selected");
+            return;
+        }
+
+        // Get the selected songs from the list view
+        ObservableList<Songs> selectedSongs = lstViewSongs.getSelectionModel().getSelectedItems();
+        if (selectedSongs.isEmpty()) {
+            System.out.println("No songs selected");
+            return;
+        }
+
+        try {
+            // Get the playlist_id based on the selected playlist name
+            int playlistId = getPlaylistId(selectedPlaylist);
+            if (playlistId == -1) {
+                System.out.println("Playlist not found in the database");
+                return;
+            }
+
+            // For each selected song, get its song_id and add it to the playlist
+            for (Songs song : selectedSongs) {
+                int songId = getSongId(song);
+                if (songId == -1) {
+                    System.out.println("Song not found in the database");
+                    continue;
+                }
+
+                addSongToPlaylist(playlistId, songId);
+                lstViewSongonPlaylist.getItems().add(song.getTitle()); // Update UI to show song in the playlist
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error adding songs to playlist: " + e.getMessage());
+        }
+    }
+
+
+    // Retrieve the playlist_id from the database based on playlist name
+    private int getPlaylistId(String playlistName) throws SQLException {
+        String query = "SELECT id FROM Playlists WHERE playlistName = ?";
+        try (Connection conn = dbc.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, playlistName);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id"); // Return the ID if found
+                }
+            }
+        }
+        // Return -1 or throw an exception if no playlist is found
+        return -1; // Indicates that the playlist does not exist
+    }
+
+    // Retrieve the song_id from the database based on song name
+    private int getSongId(Songs song) throws SQLException {
+        String query = "SELECT id FROM Songs WHERE title = ?";
+        try (Connection conn = dbc.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, song.getTitle());  // Assuming 'getTitle()' method exists in Songs class
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+            }
+        }
+        return -1; // Song not found
+    }
+
+    // Add a song to the playlist in the playlistSongs table
+    private void addSongToPlaylist(int playlistId, int songId) throws SQLException {
+        String query = "INSERT INTO PlaylistSong (playlist_id, songs_id) VALUES (?, ?)";
+        try (Connection conn = dbc.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, playlistId);
+            stmt.setInt(2, songId);
+            stmt.executeUpdate();
+        }
+    }
+
+    private ObservableList<String> getSongsInPlaylist(int playlistId) {
+        ObservableList<String> songTitles = FXCollections.observableArrayList();
+        String query = "SELECT s.title FROM Songs s " +
+                "INNER JOIN PlaylistSong ps ON s.id = ps.songs_id " +  // Check the column names
+                "WHERE ps.playlist_id = ?";  // Check the column names
+
+        try (Connection conn = dbc.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, playlistId);  // Set the playlist ID parameter
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String title = rs.getString("title");
+                songTitles.add(title);  // Add song title to the list
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error loading songs for playlist: " + e.getMessage());
+        }
+        return songTitles;
+    }
+
+    @FXML
+    private void onPlaylistClicked(MouseEvent event) {
+        // Get the selected playlist name from lstViewPlaylists
+        String selectedPlaylist = lstViewPlaylists.getSelectionModel().getSelectedItem();
+        if (selectedPlaylist != null) {
+            // Get the playlist ID based on the selected playlist name
+            int playlistId = getPlaylistIdByName(selectedPlaylist);
+
+            // Fetch the songs for this playlist
+            ObservableList<String> songs = getSongsInPlaylist(playlistId);
+
+            // Clear the previous songs from the ListView
+            lstViewSongonPlaylist.getItems().clear();
+
+            // Add the new songs to the ListView
+            lstViewSongonPlaylist.setItems(songs);
+        }
+    }
+
+    public int getPlaylistIdByName(String playlistName) {
+        int playlistId = -1;
+        String query = "SELECT id FROM Playlists WHERE playlistName = ?";  // Adjust if necessary
+
+        try (Connection conn = dbc.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, playlistName);  // Set the playlist name
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                playlistId = rs.getInt("id");  // Use the correct column name
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error getting playlist ID: " + e.getMessage());
+        }
+        return playlistId;
+    }
 }
+
 
 
 

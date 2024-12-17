@@ -13,25 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SongsDAODB {
+public class SongsDAODB  {
 
-        private DBConnection con = new DBConnection();
+         private DBConnection con = new DBConnection();
 
-        // Method to check if a song exists in the database
+    public SongsDAODB() throws SQLException {
+    }
+
+    // Method to check if a song exists in the database
         private boolean songExists(Songs song) throws SQLException {
-            String sql = "SELECT COUNT(*) FROM Songs WHERE title = ? AND artist = ? AND filePath = ?";
+            String sql = "SELECT 1 FROM Songs WHERE title = ? AND artist = ? AND filePath = ?";
             try (Connection connection = con.getConnection();
                  PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, song.getTitle());
                 stmt.setString(2, song.getArtist());
                 stmt.setString(3, song.getFilePath());
 
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getInt(1) > 0; // If count > 0, song exists
+                try (ResultSet rs = stmt.executeQuery()) {
+                    return rs.next(); // Returns true if a song exists
                 }
             }
-            return false;
         }
 
         // Method to add songs to the database (avoiding duplicates)
@@ -52,8 +53,17 @@ public class SongsDAODB {
                     }
                 }
 
-                stmt.executeBatch(); // Execute all insertions at once
+                int[] result = stmt.executeBatch(); // Execute all insertions at once
                 System.out.println("Songs saved to the database successfully!");
+
+                // Check if all songs were inserted
+                int successCount = 0;
+                for (int res : result) {
+                    if (res == PreparedStatement.SUCCESS_NO_INFO || res > 0) {
+                        successCount++;
+                    }
+                }
+                System.out.println(successCount + " songs were successfully added.");
             } catch (SQLException e) {
                 System.err.println("Error saving songs to the database: " + e.getMessage());
                 throw e;
@@ -63,24 +73,39 @@ public class SongsDAODB {
     public boolean updateSong(Songs updatedSong, String originalTitle, String originalArtist) throws SQLException {
         String sql = "UPDATE songs SET title = ?, artist = ?, filePath = ? WHERE title = ? AND artist = ?";
         try (Connection connection = con.getConnection();
-                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, updatedSong.getTitle());
             pstmt.setString(2, updatedSong.getArtist());
             pstmt.setString(3, updatedSong.getFilePath());
             pstmt.setString(4, originalTitle);
             pstmt.setString(5, originalArtist);
-            return pstmt.executeUpdate() > 0; // Returns true if the update was successful
+
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Song updated successfully.");
+                return true;
+            } else {
+                System.out.println("No song found to update.");
+                return false;
+            }
         }
     }
 
     public boolean deleteSong(String title, String artist) throws SQLException {
         String sql = "DELETE FROM songs WHERE title = ? AND artist = ?";
         try (Connection connection = con.getConnection();
-                PreparedStatement pstmt = connection.prepareStatement(sql)) {
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, title);
             pstmt.setString(2, artist);
-            return pstmt.executeUpdate() > 0; // Returns true if the deletion was successful
+
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Song deleted successfully.");
+                return true;
+            } else {
+                System.out.println("No song found to delete.");
+                return false;
+            }
         }
     }
-
 }

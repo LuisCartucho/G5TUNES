@@ -86,7 +86,7 @@ public class AddNewSongController {
         this.mainController = mainController;
     }
 
-    public void onBtnSaveAct(ActionEvent actionEvent) {
+    public void onBtnSaveAct(ActionEvent actionEvent) throws SQLException {
         String title = titleTxtFl.getText();
         String artist = artistTxtFl.getText();
         String filePath = fileTxtFld.getText();
