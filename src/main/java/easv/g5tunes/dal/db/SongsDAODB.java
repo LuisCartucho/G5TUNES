@@ -65,7 +65,6 @@ public class SongsDAODB  {
                 }
                 System.out.println(successCount + " songs were successfully added.");
             } catch (SQLException e) {
-                System.err.println("Error saving songs to the database: " + e.getMessage());
                 throw e;
             }
         }

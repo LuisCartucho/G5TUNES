@@ -147,7 +147,40 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickPlaylistsDelete(ActionEvent actionEvent) {
+
+        // Get the selected playlist from the ListView
+        String selectedPlaylist = lstViewPlaylists.getSelectionModel().getSelectedItem();
+
+        if (selectedPlaylist != null) {
+            try {
+                //  Retrieve the database connection
+                Connection conn = dbc.getConnection(); // Fetch actual Connection object from dbc
+
+                //  Prepare the SQL query
+                String deleteSQL = "DELETE FROM Playlists WHERE playlistName = ?";
+                PreparedStatement pstmt = conn.prepareStatement(deleteSQL);
+                pstmt.setString(1, selectedPlaylist);
+
+                //  Execute the query
+                int affectedRows = pstmt.executeUpdate();
+                pstmt.close();
+
+                //  Check if deletion was successful
+                if (affectedRows > 0) {
+
+                    lstViewPlaylists.getItems().remove(selectedPlaylist);
+                    showAlert("Success", "Playlist '" + selectedPlaylist + "' has been deleted.");
+                } else {
+                    showAlert("Error", "Could not delete playlist.");
+                }
+            } catch (SQLException e) {
+                showAlert("Database Error", "Error deleting playlist: " + e.getMessage());
+            }
+        } else {
+            showAlert("Warning", "Please select a playlist to delete.");
+        }
     }
+
 
     public void onClickSongsNew(ActionEvent actionEvent) {
         FileChooser filechooser = new FileChooser();
@@ -223,6 +256,7 @@ public class MyTunesController implements Initializable {
     public void OnClickSongonPlaylistDelete(ActionEvent actionEvent) {
     }
 
+
     public void OnClickSongonPlaylistScrollDown(ActionEvent actionEvent) {
     }
 
@@ -288,17 +322,9 @@ public class MyTunesController implements Initializable {
             }
         }
 
-
-
-    }
-
-    public void onClickFastForward(ActionEvent actionEvent) {
     }
 
     public void OnClickSongonPlaylistScrollUp(ActionEvent actionEvent) {
-    }
-
-    public void onClickRewind(ActionEvent actionEvent) {
     }
 
     private void showAlertWindow(Exception e) {
