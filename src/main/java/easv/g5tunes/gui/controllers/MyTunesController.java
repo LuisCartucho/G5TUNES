@@ -39,6 +39,8 @@ public class MyTunesController implements Initializable {
     SongService songService = new SongService();
     private SongsDAO songsDAO = new SongsDAO();
     private MediaPlayer currentMediaPlayer;
+    private final FilterService filterService = new FilterService();
+    private boolean isFilterActive = false; // Track the current state of the button
 
     @FXML
     private Button btnSongEdit;
@@ -85,6 +87,24 @@ public class MyTunesController implements Initializable {
     }
 
     public void onClickFilterSearch(ActionEvent actionEvent) {
+        if (isFilterActive) {
+            // Clear filter
+            lstViewSongs.setItems(FXCollections.observableArrayList(songsModel.getAllSongs()));
+            fieldFilterSearch.clear();
+            btnFilter.setText("Filter");
+            isFilterActive = false;
+        } else {
+            // Apply filter
+            String filterQuery = fieldFilterSearch.getText().trim().toLowerCase();
+            List<Songs> filteredSongs = filterService.filterSongs(
+                    songsModel.getAllSongs(), // Get all songs
+                    filterQuery // Pass query to the filter method
+            );
+            System.out.println("Filtered Songs Count: " + filteredSongs.size());
+            lstViewSongs.setItems(FXCollections.observableArrayList(filteredSongs));
+            btnFilter.setText("Clear");
+            isFilterActive = true;
+        }
     }
 
     public void addPlaylistToListView(String playlistName) {

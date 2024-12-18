@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 
 public class SongsDAODB  {
@@ -19,6 +20,30 @@ public class SongsDAODB  {
 
     public SongsDAODB() throws SQLException {
     }
+
+    public List<Songs> getAllSongs() {
+        List<Songs> allSongs = new ArrayList<>();
+        String sql = "SELECT * FROM Songs";
+
+        try (Statement statement = con.getConnection().createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                String artist = resultSet.getString("artist");
+                String filePath = resultSet.getString("filePath");
+
+                Songs song = new Songs(title, artist, filePath);
+                allSongs.add(song);
+            }
+            System.out.println("Fetched Songs: " + allSongs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return allSongs;
+    }
+
 
     // Method to check if a song exists in the database
         private boolean songExists(Songs song) throws SQLException {
