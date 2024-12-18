@@ -327,10 +327,6 @@ public class MyTunesController implements Initializable {
     public void OnClickSongonPlaylistScrollUp(ActionEvent actionEvent) {
     }
 
-    private void showAlertWindow(Exception e) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-        alert.showAndWait();
-    }
 
     public void loadSongsFromFolder(String folderPath) {
         // Fetch songs using SongsDAO
@@ -509,6 +505,10 @@ public class MyTunesController implements Initializable {
                     System.out.println("Song not found in the database");
                     continue;
                 }
+                if (isSongInPlaylist(playlistId, songId)) {
+                    System.out.println("Song '" + song.getTitle() + "' already exists in the playlist");
+                    continue; // Skip duplicates
+                }
 
                 addSongToPlaylist(playlistId, songId);
                 lstViewSongonPlaylist.getItems().add(song.getTitle()); // Update UI to show song in the playlist
@@ -519,6 +519,20 @@ public class MyTunesController implements Initializable {
             System.out.println("Error adding songs to playlist: " + e.getMessage());
         }
     }
+
+        private boolean isSongInPlaylist(int playlistId, int songId) throws SQLException {
+            String query = "SELECT 1 FROM PlaylistSong WHERE playlist_id = ? AND songs_id = ?";
+            try (Connection conn = dbc.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, playlistId);
+                stmt.setInt(2, songId);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    return rs.next(); // If a row is found, the song is already in the playlist
+                }
+            }
+        }
+
 
 
     // Retrieve the playlist_id from the database based on playlist name
