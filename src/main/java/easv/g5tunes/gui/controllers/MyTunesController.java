@@ -274,6 +274,82 @@ public class MyTunesController implements Initializable {
     }
 
     public void OnClickSongonPlaylistDelete(ActionEvent actionEvent) {
+
+            // Get the selected song title from the ListView (string)
+            String selectedSongTitle = lstViewSongonPlaylist.getSelectionModel().getSelectedItem();
+
+            if (selectedSongTitle == null) {
+                showAlert("Error", "No song selected for deletion!");
+                return;
+            }
+
+            // Retrieve the song ID from the database based on the selected song title
+            int songId = getSongIdByTitle(selectedSongTitle);
+
+            if (songId == -1) {
+                showAlert("Error", "Song not found in the database!");
+                return;
+            }
+
+            // Confirmation prompt before deletion
+            if (!confirmDelete(selectedSongTitle)) {
+                return;  // User canceled the deletion
+            }
+
+            // SQL query to delete the selected song from the playlist using the song_id
+            String deleteSongSQL = "DELETE FROM PlaylistSong WHERE songs_id = ?";
+
+            try (Connection con = dbc.getConnection();
+                 PreparedStatement stmt = con.prepareStatement(deleteSongSQL)) {
+
+                // Set the song_id parameter (not the song title)
+                stmt.setInt(1, songId);
+
+                // Execute the query
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    showAlert("Success", "Song '" + selectedSongTitle + "' removed from the playlist!");
+
+                    // Remove the song from the ListView (UI only)
+                    lstViewSongonPlaylist.getItems().remove(selectedSongTitle);
+                } else {
+                    showAlert("Error", "Failed to delete the song.");
+                }
+            } catch (SQLException e) {
+                showAlert("Error", "Failed to delete song: " + e.getMessage());
+            }
+        }
+
+// Helper method to retrieve the song ID by title from the database
+        private int getSongIdByTitle(String songTitle) {
+            String query = "SELECT id FROM Songs WHERE title = ?";
+            try (Connection con = dbc.getConnection();
+                 PreparedStatement stmt = con.prepareStatement(query)) {
+
+                // Set the song title parameter
+                stmt.setString(1, songTitle);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getInt("id");  // Return the song ID
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return -1;  // Return -1 if the song is not found
+        }
+
+    private boolean confirmDelete(String songName) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete the song from the PlayList?");
+        alert.setContentText("Song: " + songName);
+
+        // Show the alert and wait for the user response
+        return alert.showAndWait().filter(response -> response.getText().equals("OK")).isPresent();
     }
 
 
