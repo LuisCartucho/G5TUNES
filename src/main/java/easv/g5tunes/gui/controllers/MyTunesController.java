@@ -28,10 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MyTunesController implements Initializable {
 
@@ -353,9 +350,6 @@ public class MyTunesController implements Initializable {
     }
 
 
-    public void OnClickSongonPlaylistScrollDown(ActionEvent actionEvent) {
-    }
-
     public void onClickPlayStop(ActionEvent actionEvent) {
         Songs selectedSong = lstViewSongs.getSelectionModel().getSelectedItem();
 
@@ -421,6 +415,70 @@ public class MyTunesController implements Initializable {
     }
 
     public void OnClickSongonPlaylistScrollUp(ActionEvent actionEvent) {
+
+        ObservableList<String> songsInPlaylist = lstViewSongonPlaylist.getItems();
+        int selectedIndex = lstViewSongonPlaylist.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex > 0) {
+            // Swap the song with the previous one
+            String selectedSong = songsInPlaylist.get(selectedIndex);
+            songsInPlaylist.set(selectedIndex, songsInPlaylist.get(selectedIndex - 1));
+            songsInPlaylist.set(selectedIndex - 1, selectedSong);
+
+            // Re-select the moved song (optional)
+            lstViewSongonPlaylist.getSelectionModel().select(selectedIndex - 1);
+
+            // Optional: Update the song order in the database if necessary
+            updateSongOrderInDatabase();
+        }
+    }
+
+    public void OnClickSongonPlaylistScrollDown(ActionEvent actionEvent) {
+
+        ObservableList<String> songsInPlaylist = lstViewSongonPlaylist.getItems();
+        int selectedIndex = lstViewSongonPlaylist.getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex < songsInPlaylist.size() - 1) {
+            // Swap the song with the next one
+            String selectedSong = songsInPlaylist.get(selectedIndex);
+            songsInPlaylist.set(selectedIndex, songsInPlaylist.get(selectedIndex + 1));
+            songsInPlaylist.set(selectedIndex + 1, selectedSong);
+
+            // Re-select the moved song (optional)
+            lstViewSongonPlaylist.getSelectionModel().select(selectedIndex + 1);
+
+            // Optional: Update the song order in the database if necessary
+            updateSongOrderInDatabase();
+        }
+    }
+
+    private int currentPlaylistId = -1;
+
+    private void updateSongOrderInDatabase() {
+        ObservableList<String> songsInPlaylist = lstViewSongonPlaylist.getItems();
+
+        // Loop through all songs in the list and update their order in the database
+        for (int i = 0; i < songsInPlaylist.size(); i++) {
+            String songTitle = songsInPlaylist.get(i);
+
+            // Get the song_id based on song title
+            try {
+                int songId = getSongIdByTitle(songTitle);
+
+                // Update the order for this song in the PlaylistSong table
+                String updateQuery = "UPDATE PlaylistSong SET song_order = ? WHERE songs_id = ? AND playlist_id = ?";
+                try (Connection conn = dbc.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+                    stmt.setInt(1, i + 1);  // Order starts from 1
+                    stmt.setInt(2, songId);
+                    stmt.setInt(3, currentPlaylistId);  // Assuming you have the current playlist ID
+                    stmt.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Error updating song order in the database: " + e.getMessage());
+            }
+        }
     }
 
 
@@ -437,7 +495,7 @@ public class MyTunesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Load songs from the "musics" folder on desktop
-        String folderPath = "C:\\Users\\luisc\\OneDrive\\Ambiente de Trabalho\\musics"; // Path to your folder
+        String folderPath = "C:\\Users\\Ali Emre\\Desktop\\mp3 files for myTunes"; // Path to your folder
         loadSongsFromFolder(folderPath);
         loadPlaylistsFromDatabase();
         lstViewPlaylists.setOnMouseClicked(this::onPlaylistClicked);
@@ -702,10 +760,10 @@ public class MyTunesController implements Initializable {
         String selectedPlaylist = lstViewPlaylists.getSelectionModel().getSelectedItem();
         if (selectedPlaylist != null) {
             // Get the playlist ID based on the selected playlist name
-            int playlistId = getPlaylistIdByName(selectedPlaylist);
+            currentPlaylistId = getPlaylistIdByName(selectedPlaylist);
 
             // Fetch the songs for this playlist
-            ObservableList<String> songs = getSongsInPlaylist(playlistId);
+            ObservableList<String> songs = getSongsInPlaylist(currentPlaylistId);
 
             // Clear the previous songs from the ListView
             lstViewSongonPlaylist.getItems().clear();
